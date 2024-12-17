@@ -1,0 +1,83 @@
+.test {
+    background-color: red;
+}
+
+.cardContainer {
+    display: flex;
+    position: relative;
+    max-width: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+    overflow: hidden;
+    background-color: #282c34;
+    color: white;
+
+    padding: 10px;
+    min-width: 200px;
+    padding-top: 20px;
+    --tw-shadow: 7px 7px 15px 0 #000;
+    --tw-shadow-colored: 7px 7px 15px 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    border-radius: 7px;
+}
+
+.cardContainerBig {
+    display: flex;
+    position: relative;
+    min-width: 95%;
+    max-width: 95%;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+    overflow: hidden;
+    background-color: #282c34;
+    color: white;
+
+    padding: 10px;
+    padding-top: 20px;
+    --tw-shadow: 7px 7px 15px 0 #000;
+    --tw-shadow-colored: 7px 7px 15px 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+    border-radius: 7px;
+}
+
+
+.cardTitle {
+    width: 100%;
+}
+
+
+.cardTools {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px 20px;
+    border-radius: 7px;
+    background-color: rgba(0, 0, 0, .3);
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.cardImage {
+    max-width: 45vw;
+}
+
+.cardImageBig {
+    max-width: 100%;
+}
+
+.codeFont * {
+    font-size: small;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+}
+
+.codeFontBig * {
+    font-size: xx-large;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+}

@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/web_toolbox?useSSL=false&serverTimezone=UTC
+    username: ivan
+    password: password
+  web:
+    resources:
+      static-locations: "file:/share/project/toolbox/"
+
+toolbox:
+  upload:
+    path: "/share/project/toolbox/upload"   # 文件上传根路径，根据功能将文件分类，子文件名为功能名称

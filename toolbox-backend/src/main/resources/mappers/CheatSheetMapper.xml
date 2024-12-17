@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.toolboxbackend.web.mapper.CheatSheetMapper">
+
+    <insert id="insertOne"
+            parameterType="org.example.toolboxbackend.web.pojo.CheatSheet"
+            useGeneratedKeys="true"
+            keyProperty="id"
+    >
+        insert into cheatsheet(title, language, type, text_content, image_path, tags)
+        values(#{title}, #{language}, #{type}, #{textContent}, #{imagePath}, #{tags})
+    </insert>
+
+    <select id="query" resultType="org.example.toolboxbackend.web.pojo.web.rsp.cheatcheet.CheatSheetRspPOJO">
+        select id, title, language, tags, type,
+               ( case when type = 0 then image_path else text_content end ) as content
+        from cheatsheet
+        <where>
+            <if test=" title != null and  title != '' ">
+                title like concat('%', #{title}, '%')
+            </if>
+            <if test=" tag != null and tag != '' ">
+                and tags like concat('%', #{tag}, '%')
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+toolbox:
+  upload:
+    path: ""  # 文件上传根路径，根据功能将文件分类，子文件名为功能名称

@@ -1,0 +1,28 @@
+.rootContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 10px;
+
+    min-width: 100%;
+    min-height: 95vh;
+    overflow: visible;
+}
+
+.left {
+    min-width: max-content;
+    max-width: 30vw;
+    height: max-content;
+    background-color: #ECEBDE;
+    border-radius: 20px;
+    padding: 10px;
+    position: sticky;
+    top: 10px;
+}
+
+.right {
+    width: 100%;
+    background-color: #fafafa;
+    border-radius: 20px;
+
+}
