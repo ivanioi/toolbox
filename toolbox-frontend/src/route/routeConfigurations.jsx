@@ -11,7 +11,8 @@ import T2 from "../pages/tools/T2";
 import T3 from "../pages/tools/T3";
 import T4 from "../pages/tools/T4";
 
-import { Home, StickyNote2, QrCode2 } from "@mui/icons-material";
+import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck } from "@mui/icons-material";
+import ExchangeRate from "../pages/tools/ExchangeRate";
 
 // features 不支持目录分类
 // tools 只支持二级目录
@@ -70,7 +71,7 @@ const routeConfigurations = [
                     {
                         path: 'text',
                         element: <ToolParentPage />,
-                        icon: <Home />,
+                        icon: <Spellcheck />,
                         title: 'Text',
                         children: [
                             {
@@ -89,6 +90,21 @@ const routeConfigurations = [
                             },
                         ]
                     },
+                    {
+                        path: 'fun',
+                        element: <ToolParentPage />,
+                        icon: <Celebration />,
+                        title: 'Fun',
+                        children: [
+                            {
+                                path: 'exchangerate',
+                                icon: <CurrencyExchange />,
+                                title: 'Exchange Rate',
+                                desc: 'Currency Exchange Rate',
+                                element: <ExchangeRate />
+                            }
+                        ]
+                    }
                 ]
             }
         ]

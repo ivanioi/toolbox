@@ -30,7 +30,7 @@ export interface Rsp {
   desc?: string;
   data?: object;
 }
-export interface QueryCheatSheetRsp {
+export interface CheatSheetRspPOJO {
   id?: string;
   title?: string;
   language?: string;
@@ -38,12 +38,59 @@ export interface QueryCheatSheetRsp {
   tags?: string;
   type?: string;
 }
-export interface RspListQueryCheatSheetRsp {
+export interface QueryCheatSheetRsp {
+  list?: CheatSheetRspPOJO[];
+  tags?: string[];
+}
+export interface RspQueryCheatSheetRsp {
   success?: string;
   code?: string;
   msg?: string;
   desc?: string;
-  data?: QueryCheatSheetRsp[];
+  data?: QueryCheatSheetRsp;
+}
+export interface ExchangeRatePOJO {
+  name?: string;
+  /** @format date */
+  date?: string;
+  detail?: Record<string, number>;
+}
+export interface RspExchangeRatePOJO {
+  success?: string;
+  code?: string;
+  msg?: string;
+  desc?: string;
+  data?: ExchangeRatePOJO;
+}
+export interface ExchangeRateChangePair {
+  /** @format date */
+  date?: string;
+  /** @format double */
+  exchangeRate?: number;
+}
+export interface ExchangeRateHistoryPOJO {
+  baseCurrency?: string;
+  compareCurrency?: string;
+  history?: ExchangeRateChangePair[];
+}
+export interface RspExchangeRateHistoryPOJO {
+  success?: string;
+  code?: string;
+  msg?: string;
+  desc?: string;
+  data?: ExchangeRateHistoryPOJO;
+}
+export interface CurrenicesRsp {
+  currenices?: Record<string, string>;
+  /** @format int32 */
+  total?: number;
+}
+export interface RspCurrenicesRsp {
+  success?: string;
+  code?: string;
+  msg?: string;
+  desc?: string;
+  data?: CurrenicesRsp;
 }
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, ResponseType } from "axios";
 export type QueryParamsType = Record<string | number, any>;
@@ -160,7 +207,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
         tag?: string;
       },
       params?: RequestParams,
-    ) => Promise<AxiosResponse<RspListQueryCheatSheetRsp>>;
+    ) => Promise<AxiosResponse<RspQueryCheatSheetRsp>>;
     /**
      * No description
      *
@@ -169,5 +216,37 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @request GET:/api/feature/cheatsheet/deleteOne/{id}
      */
     deleteOne: (id: number, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name GetExchangeRate
+     * @request GET:/api/exchangerate@{date}/{currencyShortName}
+     */
+    getExchangeRate: (
+      date: string,
+      currencyShortName: string,
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<RspExchangeRatePOJO>>;
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name GetExchangeRateHistory
+     * @request GET:/api/exchangerate/history/{baseCurrency}/{compareCurrency}
+     */
+    getExchangeRateHistory: (
+      baseCurrency: string,
+      compareCurrency: string,
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<RspExchangeRateHistoryPOJO>>;
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name Currencies
+     * @request GET:/api/currenices
+     */
+    currencies: (params?: RequestParams) => Promise<AxiosResponse<RspCurrenicesRsp>>;
   };
 }

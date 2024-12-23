@@ -175,5 +175,44 @@ export class Api extends HttpClient {
         method: "GET",
         ...params,
       }),
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name GetExchangeRate
+     * @request GET:/api/exchangerate@{date}/{currencyShortName}
+     */
+    getExchangeRate: (date, currencyShortName, params = {}) =>
+      this.request({
+        path: `/api/exchangerate@${date}/${currencyShortName}`,
+        method: "GET",
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name GetExchangeRateHistory
+     * @request GET:/api/exchangerate/history/{baseCurrency}/{compareCurrency}
+     */
+    getExchangeRateHistory: (baseCurrency, compareCurrency, params = {}) =>
+      this.request({
+        path: `/api/exchangerate/history/${baseCurrency}/${compareCurrency}`,
+        method: "GET",
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags exchange-rate-controller
+     * @name Currencies
+     * @request GET:/api/currenices
+     */
+    currencies: (params = {}) =>
+      this.request({
+        path: `/api/currenices`,
+        method: "GET",
+        ...params,
+      }),
   };
 }

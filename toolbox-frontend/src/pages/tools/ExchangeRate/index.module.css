@@ -1,0 +1,32 @@
+.noBorder * {
+    border: none !important;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    gap: 10px;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.leftContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 600px;
+    max-width: 600px;
+}
+
+
+.leftSelectorContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 10px;
+}

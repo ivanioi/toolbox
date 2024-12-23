@@ -2,6 +2,7 @@ package org.example.toolboxbackend.web.pojo.web;
 
 import lombok.Builder;
 import lombok.Data;
+import org.example.toolboxbackend.web.enums.ErrorCode;
 import org.example.toolboxbackend.web.exceptions.BusinessException;
 
 @Data
@@ -34,6 +35,14 @@ public class Rsp<T> {
         return fail(code, msg, null);
     }
 
+    public static <T> Rsp<T> fail(ErrorCode code){
+        return fail(code.getCode(), code.getMsg());
+    }
+
+    public static <T> Rsp<T> fail(ErrorCode code, String desc){
+        return fail(code.getCode(), code.getMsg(), desc);
+    }
+
     public static <T> Rsp<T> fail(String code, String msg, String desc){
         return fail(code, msg, desc, null);
     }
@@ -43,6 +52,6 @@ public class Rsp<T> {
     }
 
     public static Rsp fail(BusinessException be){
-        return fail(be.getErrorCode().getCode(), be.getErrorCode().getMsg(), be.getMessage(), null);
+        return fail(be.getErrorCode(), be.getMessage());
     }
 }

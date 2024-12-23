@@ -1,5 +1,4 @@
 import { Api } from "../api/Api";
-import { useAlert } from "./AlertUtils";
 
 export function debounce(fn, delay) {
     let timer = null; // 定时器ID
@@ -12,13 +11,14 @@ export function debounce(fn, delay) {
 }
 
 
-export function sendHttp(apiName, params, successFn = () => { }, failFn = () => { }) {
+export function sendHttp(apiName, params = [], successFn = () => { }, failFn = () => { }) {
+
     return new Api().api[apiName](...params).then(
         ({ data }) => {
             if (data.success == '1') {
                 return successFn(data)
             } else {
-                return failFn(data)
+                return failFn(data.msg)
             }
         }
     )

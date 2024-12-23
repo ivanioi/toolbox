@@ -1,4 +1,4 @@
-package org.example.toolboxbackend.web.controllers;
+package org.example.toolboxbackend.web.controllers.features;
 
 import jakarta.annotation.Nullable;
 import jakarta.annotation.Resource;
@@ -9,17 +9,14 @@ import org.example.toolboxbackend.web.mapper.CheatSheetMapper;
 import org.example.toolboxbackend.web.pojo.CheatSheet;
 import org.example.toolboxbackend.web.pojo.web.Rsp;
 import org.example.toolboxbackend.web.pojo.web.req.cheatsheet.AddCheatSheetReq;
-import org.example.toolboxbackend.web.pojo.web.req.cheatsheet.QueryCheatSheetReq;
 import org.example.toolboxbackend.web.pojo.web.rsp.cheatcheet.CheatSheetRspPOJO;
 import org.example.toolboxbackend.web.pojo.web.rsp.cheatcheet.QueryCheatSheetRsp;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.Query;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 

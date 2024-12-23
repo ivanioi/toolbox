@@ -2,8 +2,6 @@ package org.example.toolboxbackend.web.controllers.upload;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Pattern;
 import org.example.toolboxbackend.web.enums.ErrorCode;
 import org.example.toolboxbackend.web.exceptions.BusinessException;
 import org.example.toolboxbackend.web.pojo.web.Rsp;
@@ -16,11 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.text.DateFormat;
 
 @RestController
 @RequestMapping("/api/upload")
@@ -41,7 +37,7 @@ public class SimpleFileUploadController {
             }
 
             if (file.isEmpty()) {
-                throw new BusinessException(ErrorCode.EC150, "上传文件内容为空.");
+                throw new BusinessException(ErrorCode.ERROR_FILE_UPLOAD, "上传文件内容为空.");
             }
 
             String fileName = System.currentTimeMillis() + "@" + StringUtils.trimAllWhitespace(file.getOriginalFilename());
@@ -50,7 +46,7 @@ public class SimpleFileUploadController {
             // /upload/.../file 上传文件的可访问路径
             filePath = Path.of("/", feature, fileName).toString();
         } catch (IOException e) {
-            return Rsp.fail(ErrorCode.EC150.getCode(), ErrorCode.EC150.getMsg(), e.getMessage());
+            return Rsp.fail(ErrorCode.ERROR_FILE_UPLOAD.getCode(), ErrorCode.ERROR_FILE_UPLOAD.getMsg(), e.getMessage());
         } catch (BusinessException e) {
             return Rsp.fail(e);
         }

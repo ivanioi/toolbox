@@ -36,4 +36,8 @@ services:
 
 volumes:
   db:
+    external: true
+    name: 'toolbox-backend_db'
   upload:
+    external: true
+    name: 'toolbox-backend_upload'

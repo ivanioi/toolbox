@@ -5,7 +5,7 @@
 function removeDuplicates4array(array) {
     let tmp = {}
     for (const key of array) {
-        tmp[key] = ''
+        tmp[key.trim()] = ''
     }
     return [...Object.getOwnPropertyNames(tmp)]
 }
