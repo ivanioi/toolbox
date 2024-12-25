@@ -52,18 +52,20 @@ export default function ExchangeRate() {
     }, [])
 
     React.useEffect(() => {
-        sendHttp("getExchangeRateHistory", [baseCurrency.value, comparedCurrency.value],
-            (rsp) => {
-                setXDataSource(rsp.data.history.map(item => {
-                    return item.date.split("-")[1]
-                }).sort())
+        if (comparedCurrency && comparedCurrency.value) {
+            sendHttp("getExchangeRateHistory", [baseCurrency.value, comparedCurrency?.value],
+                (rsp) => {
+                    setXDataSource(rsp.data.history.map(item => {
+                        return item.date.split("-")[1]
+                    }).sort())
 
-                setYDataSource(rsp.data.history.sort((a, b) => { return Number.parseInt(a.date.split("-")[1]) - Number.parseInt(b.date.split("-")[1]) }).map(
-                    item => Number.parseFloat(item.exchangeRate)
-                ))
-            },
-            alertError
-        )
+                    setYDataSource(rsp.data.history.sort((a, b) => { return Number.parseInt(a.date.split("-")[1]) - Number.parseInt(b.date.split("-")[1]) }).map(
+                        item => Number.parseFloat(item.exchangeRate)
+                    ))
+                },
+                alertError
+            )
+        }
     }, [baseCurrency, comparedCurrency])
 
     function caculate() {

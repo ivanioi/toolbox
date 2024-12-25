@@ -10,6 +10,13 @@ import { useAlert, useDialog } from "../../../utils/AlertUtils"
 import { debounce, sendHttp } from "../../../utils/ToolUtils"
 import useRefresh from "../../../utils/useRefresh"
 
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import { PostAdd } from '@mui/icons-material';
+import DirectionsIcon from '@mui/icons-material/Directions';
 
 
 export default function CheatSheets() {
@@ -99,16 +106,21 @@ export default function CheatSheets() {
         <>
             <div className={clsx(styles.container)}>
                 <div className={clsx(styles.searchContainer)}>
-                    <Input
-                        variant="filled"
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <Search />
-                            </InputAdornment>
-                        }
-                        onChange={e => handleSearch(e.target.value)}
-                    />
-                    <Button color="secondary" variant="outlined" onClick={() => setAddIsOpened(!addIsOpened)}>Add</Button>
+                    <Paper
+                        component="form"
+                        sx={{ p: '5px 10px', display: 'flex', alignItems: 'center', width: 400 }}
+                    >
+                        <InputBase
+                            onChange={e => handleSearch(e.target.value)}
+                            sx={{ ml: 1, flex: 1 }}
+                            placeholder="Search Google Maps"
+                            inputProps={{ 'aria-label': 'search google maps' }}
+                        />
+                        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                        <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions" onClick={() => setAddIsOpened(!addIsOpened)}>
+                            <PostAdd />
+                        </IconButton>
+                    </Paper>
                 </div>
 
                 <Drawer

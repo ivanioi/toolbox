@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Alert, Dialog, Fade, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Typography } from '@mui/material'
 import { useGlobalStore } from '../../App'
-import { Outlet, useNavigate } from 'react-router'
+import { Outlet, useNavigate, useLocation } from 'react-router'
 import { genMenuConfig } from '../../utils/RouteUtils'
 import { RichTreeView } from '@mui/x-tree-view/RichTreeView';
 import { TreeItem2 } from '@mui/x-tree-view/TreeItem2';
@@ -51,6 +51,7 @@ const genCustomTreeItem = (isMenuOpen) => {
 
 
 export default function Main() {
+
     // 全局提示反馈，对话框
     const { alert: { severity, msg, isOpen, shortLived }, closeAlert } = useGlobalStore((state) => state)
     const { dialog: { title: dTitle, msg: dMsg, isOpen: dIsOpen, handleAgree: dHa, handleDisagree: dHda }, closeDialog } = useGlobalStore((state) => state)
@@ -62,7 +63,14 @@ export default function Main() {
 
     const apiRef = useTreeViewApiRef();
 
+    let location = useLocation();
     let navigate = useNavigate()
+
+    React.useEffect(() => {
+        if (location.pathname == "/") {
+            navigate("/home")
+        }
+    })
 
     function handleClick(evt, itemId) {
         const item = apiRef.current.getItem(itemId)

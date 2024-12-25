@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import Main from "../pages/main";
 import FeatureReoutPage from "../pages/main/components/feature";
 import ToolRoutePage from "../pages/main/components/tool";
@@ -13,6 +13,7 @@ import T4 from "../pages/tools/T4";
 
 import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck } from "@mui/icons-material";
 import ExchangeRate from "../pages/tools/ExchangeRate";
+import { patch } from "@mui/material";
 
 // features 不支持目录分类
 // tools 只支持二级目录
