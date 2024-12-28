@@ -6,12 +6,13 @@ import ToolRoutePage from "../pages/main/components/tool";
 import CheatSheets from "../pages/features/CheatSheets";
 import ToolParentPage from "../pages/main/components/toolParentRoute";
 import HomePage from "../pages/main/components/home";
+import EnvelopEstimation from "../pages/tools/EnvelopEstimation";
 import T1 from "../pages/tools/T1";
 import T2 from "../pages/tools/T2";
 import T3 from "../pages/tools/T3";
 import T4 from "../pages/tools/T4";
 
-import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck } from "@mui/icons-material";
+import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck, Calculate, Functions } from "@mui/icons-material";
 import ExchangeRate from "../pages/tools/ExchangeRate";
 import { patch } from "@mui/material";
 
@@ -89,6 +90,21 @@ const routeConfigurations = [
                                 desc: 'xxxxxxxxxx',
                                 element: <T4 />
                             },
+                        ]
+                    },
+                    {
+                        path: 'calculator',
+                        element: <ToolParentPage />,
+                        icon: <Calculate />,
+                        title: 'Calculator',
+                        children: [
+                            {
+                                path: 'enveplopestimation',
+                                icon: <Functions />,
+                                title: 'Envelop Estimatio',
+                                desc: 'Back Of the Envelop Estimation',
+                                element: <EnvelopEstimation />
+                            }
                         ]
                     },
                     {

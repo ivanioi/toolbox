@@ -54,7 +54,7 @@ export default function Main() {
 
     // 全局提示反馈，对话框
     const { alert: { severity, msg, isOpen, shortLived }, closeAlert } = useGlobalStore((state) => state)
-    const { dialog: { title: dTitle, msg: dMsg, isOpen: dIsOpen, handleAgree: dHa, handleDisagree: dHda }, closeDialog } = useGlobalStore((state) => state)
+    const { dialog: { title: dTitle, msg: dMsg, isOpen: dIsOpen, handleAgree: dHa, handleDisagree: dHda, haveAction }, closeDialog } = useGlobalStore((state) => state)
     const alertDomRef = React.useRef(null)
 
     const [isMenuOpen, setIsMenuOpen] = React.useState(true);
@@ -103,14 +103,19 @@ export default function Main() {
                             </Typography>
                         </div>
                     </DialogContent>
-                    <DialogActions>
-                        <Button autoFocus onClick={() => dHda(closeDialog)}>
-                            Disagree
-                        </Button>
-                        <Button onClick={() => dHa(closeDialog)} autoFocus>
-                            Agree
-                        </Button>
-                    </DialogActions>
+                    {
+                        haveAction ?
+                            (
+                                <DialogActions>
+                                    <Button autoFocus onClick={() => dHda(closeDialog)}>
+                                        Disagree
+                                    </Button>
+                                    <Button onClick={() => dHa(closeDialog)} autoFocus>
+                                        Agree
+                                    </Button>
+                                </DialogActions>
+                            ) : (<></>)
+                    }
                 </Dialog>
             </div>
             <div

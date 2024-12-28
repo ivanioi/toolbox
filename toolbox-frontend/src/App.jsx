@@ -9,12 +9,13 @@ export const useGlobalStore = create((set) => ({
   // 全局状态反馈
   alert: { severity: 'info', msg: 'Everything is fine!', isOpen: false, shortLived: true },
   // 全局提示框, 交互
-  dialog: { title: 'Default', msg: 'Default', isOpen: false, handleAgree: () => { }, handleDisagree: () => { } },
-  dialogTo: (title, msg, ha, hda) => set(produce(df => {
+  dialog: { title: 'Default', msg: 'Default', isOpen: false, haveAction: true, handleAgree: () => { }, handleDisagree: () => { } },
+  dialogTo: (title, msg, haveAction, ha, hda) => set(produce(df => {
     df.dialog.title = title;
     df.dialog.msg = msg;
     df.dialog.handleAgree = ha;
     df.dialog.handleDisagree = hda;
+    df.dialog.haveAction = haveAction
     df.dialog.isOpen = true
   })),
   closeDialog: () => set(produce(df => {

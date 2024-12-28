@@ -13,8 +13,8 @@ export function useAlert() {
 
 export function useDialog() {
     const { dialogTo } = useGlobalStore(state => state)
-    return (title, msg, handleAgree = () => { }, handleDisagree = () => { }) => {
-        dialogTo(title, msg, (closeF) => {
+    return (title, msg, handleAgree = () => { }, handleDisagree = () => { }, haveAction = true) => {
+        dialogTo(title, msg, haveAction, (closeF) => {
             handleAgree()
             closeF()
         }, (closeF) => {
