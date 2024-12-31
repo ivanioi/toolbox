@@ -2,6 +2,8 @@
 //
 // a simple calculator language
 
+import { finishDraft } from "immer";
+
 // This program parses a very simple language that just does a little basic
 // arithmetic. Here are some simple examples of the sort of thing you can
 // write in the calculator language:
@@ -161,6 +163,10 @@ function parse(code) {
 
 
 export default function evaluateAsFloat(code) {
+    code = enhanceE(code)
+    code = enhanceFloat(code)
+    console.log(code)
+
     var variables = Object.create(null);
     variables.e = Math.E;
     variables.pi = Math.PI;
@@ -176,4 +182,45 @@ export default function evaluateAsFloat(code) {
         }
     }
     return evaluate(parse(code));
+}
+
+
+// enhance function
+
+// 增强 1e10 科学表达式解析
+// 1. 不支持 e10 这种默认 1 为 base 的表达式
+function enhanceE(code) {
+    let eRgx = new RegExp("[0-9]+[eE]{1}[-]?[0-9]+", "g");
+    while (code.indexOf("e") != -1) {
+        let matchs = [...code.matchAll(eRgx)]
+        let [expr, idx] = matchs[0]
+        let [base, exponent] = expr.split("e")
+        code = code.replace(expr, base + "*" + (exponent.indexOf("-") == -1 ? Math.pow(10, exponent) : Math.pow(0.1, exponent.substr(1)).toFixed(2)))
+    }
+    return code;
+}
+
+// 增强小数点 ! Crazy 不支持小数点
+function enhanceFloat(code) {
+    console.log(code)
+    let pointRgx = new RegExp("[0-9]+\\.[0-9]+", "g");
+
+    // 届些 1.1234 中的 314123 部分 转换为 1234/10000
+    function parseAfterPoion(fltStr) {
+        let ms = [...fltStr.matchAll(new RegExp("[1-9]{1}", "g"))]
+        let num = ms.length == 1 ? ms[0][0] : fltStr.substr(ms[0].index, ms[ms.length - 1].index + 1)
+        return num + "/" + Math.pow(10, ms[ms.length - 1].index + 1)
+    }
+
+    while (code.indexOf(".") != -1) {
+        let matchs = [...code.matchAll(pointRgx)]
+        let [expr, idx] = matchs[0]
+        let [itr, flt] = expr.split(".")
+        if (itr == "0") {
+            code = code.replace(expr, parseAfterPoion(flt))
+        } else {
+            code = code.replace(expr, "(" + itr + "+" + parseAfterPoion(flt) + ")")
+        }
+    }
+    return code;
 }

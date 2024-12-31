@@ -17,7 +17,7 @@ export default function Calculator() {
     // last item is current step
     const [stepHistory, setStepHistory] = React.useState([])
     const [curStep, setCurStep] = React.useState({ expr: '', opr: '', unit: '' })
-    const units = ["Bit", "Byte", "MB", "KB", "GB", "TB", "Hz", "KHz", "MHz", "GHz", "DAU", "WAU", "MAU", "Hours", "Minutes", "Days", "Weeks", "Months", "Years"]
+    const units = ["Billion", "Million", "Bit", "Byte", "MB", "KB", "GB", "TB", "Hz", "KHz", "MHz", "GHz", "DAU", "WAU", "MAU", "Hours", "Minutes", "Days", "Weeks", "Months", "Years"]
 
     const { alertError, alertWarning } = useAlert()
 
@@ -53,7 +53,7 @@ export default function Calculator() {
                     code += stepHistory[i].expr.trim()
                     code += stepHistory[i].opr == 'X' ? '*' : stepHistory[i].opr == "=" ? '' : stepHistory[i].opr
                 }
-                code += curStep.expr.trim()
+                code += (curStep.expr + "").trim()
                 setCurStep({ expr: arithmeticParser(code), opr: '', unit: '' })
             } else {
                 setCurStep({ expr: '', opr: '', unit: '' })
@@ -128,7 +128,7 @@ export default function Calculator() {
                     <CalculatorItem content="7" isNumber onClick={() => { handleExpr('7') }} />
                     <CalculatorItem content="8" isNumber onClick={() => { handleExpr('8') }} />
                     <CalculatorItem content="9" isNumber onClick={() => { handleExpr('9') }} />
-                    <CalculatorItem content="-" isNumber isDisable={true} onClick={() => handleExpr("--")} />
+                    <CalculatorItem content="-" isNumber onClick={() => handleExpr("--")} />
                     <CalculatorItem content="/" onClick={() => handleArithmeticOpr("/")} />
                 </div>
                 <div className={clsx(styles.rightRowContainer)}>
@@ -148,7 +148,7 @@ export default function Calculator() {
                 <div className={clsx(styles.rightRowContainer)}>
                     <CalculatorItem content="0" isNumber onClick={() => { handleExpr('0') }} />
                     <CalculatorItem content="." isNumber onClick={() => { handleExpr('.') }} />
-                    <CalculatorItem content="e" isNumber isDisable={true} onClick={() => handleExpr('e')} />
+                    <CalculatorItem content="e" isNumber onClick={() => handleExpr('e')} />
                     <CalculatorItem content="?" isDisable={true} />
                     <CalculatorItem content="+" onClick={() => handleArithmeticOpr('+')} />
                 </div>
