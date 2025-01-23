@@ -70,7 +70,7 @@ export default function CheatSheets() {
     }
 
     // Add 
-    function handleAddCheatsheet(title, language, tags, filePath) {
+    function handleAddCheatsheet(title, language, tags, filePath, type) {
         setAddIsOpened(false)
         sendHttp('insertOne', [
             {
@@ -78,7 +78,7 @@ export default function CheatSheets() {
                 language,
                 tags: tags.join(),
                 filePath,
-                type: filePath.substr(filePath.lastIndexOf("."), filePath.length) == ".txt" ? 1 : 0
+                type
             }
         ], (data) => {
             alertSuccess(data.msg)
@@ -146,11 +146,13 @@ export default function CheatSheets() {
                         ))
                     }
                 </div>
+
                 <div className={clsx(styles.cardContainer)}>
                     {
-                        cheatsheets.map(item => <CheatSheetCard key={item.id} {...item} onDelete={handleDelete} />)
+                        cheatsheets.map(item => <CheatSheetCard key={item.id} {...item} onDelete={handleDelete} onClickTag={setSelectedTag} />)
                     }
                 </div>
+
             </div >
         </>
     )

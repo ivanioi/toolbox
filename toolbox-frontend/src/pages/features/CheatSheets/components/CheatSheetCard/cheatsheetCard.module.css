@@ -3,19 +3,23 @@
 }
 
 .cardContainer {
+
     display: flex;
     position: relative;
-    max-width: fit-content;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 5px;
     align-items: center;
-    overflow: hidden;
+    overflow: scroll;
     background-color: #282c34;
     color: white;
 
     padding: 10px;
-    min-width: 200px;
+    min-width: 20%;
+    max-width: 20%;
+    min-height: 35vh;
+    max-height: 35vh;
+
     padding-top: 20px;
     --tw-shadow: 7px 7px 15px 0 #000;
     --tw-shadow-colored: 7px 7px 15px 0 var(--tw-shadow-color);
@@ -26,13 +30,14 @@
 .cardContainerBig {
     display: flex;
     position: relative;
-    min-width: 95%;
-    max-width: 95%;
+    min-width: fit-content;
+    min-height: 35vh;
+    max-height: fit-content;
     flex-direction: column;
     justify-content: center;
     gap: 5px;
     align-items: center;
-    overflow: hidden;
+    overflow: scroll;
     background-color: #282c34;
     color: white;
 
@@ -49,6 +54,15 @@
     width: 100%;
 }
 
+.cardTags {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
 
 .cardTools {
     position: absolute;
@@ -65,11 +79,11 @@
 
 
 .cardImage {
-    max-width: 45vw;
+    max-width: 100%;
 }
 
 .cardImageBig {
-    max-width: 100%;
+    min-width: fit-content;
 }
 
 .codeFont * {
@@ -78,6 +92,10 @@
 }
 
 .codeFontBig * {
-    font-size: xx-large;
+    font-size: medium;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace !important;
+}
+
+.contentContainer {
+    width: 100%;
 }

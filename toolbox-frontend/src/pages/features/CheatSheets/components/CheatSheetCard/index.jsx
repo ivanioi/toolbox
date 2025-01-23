@@ -1,19 +1,19 @@
 import styles from './cheatsheetCard.module.css'
 import clsx from 'clsx'
 import Highlight from 'react-highlight'
-import { Typography } from '@mui/material'
+import { Typography, Chip } from '@mui/material'
 import { Code, DeleteOutline, Fullscreen } from '@mui/icons-material'
 import { useState } from 'react'
 /**
  * title
- * tags: [tag1, tag2, tag3.....]
+ * tags: "tag1,tag2"
  * content: custom image or syntax text
  * language
  * type: image(full custome) | text
  * @returns 
  */
 export default function CheatSheetCard(
-    { id, title = 'default', tags = [], content = 'default', language, type, onDelete }
+    { id, title = 'default', tags = "", content = 'default', language, type, onDelete, onClickTag }
 ) {
 
     const [isFullScreen, setIsFullScreen] = useState(false)
@@ -29,7 +29,14 @@ export default function CheatSheetCard(
                         <Typography variant='subtitle2'>{language}</Typography>
                     </div>
                 </div>
-                <div>
+                <div className={clsx(styles.cardTags)}>
+                    {
+                        tags.split(",").map(item => {
+                            return <Chip color="success" key={item} label={item} variant="outlined" onClick={() => onClickTag({ title: item })} />
+                        })
+                    }
+                </div>
+                <div className={clsx(styles.contentContainer)}>
                     {
                         type == '0' ?
                             <img className={clsx(isFullScreen ? styles.cardImageBig : styles.cardImage)} src={content} /> :
