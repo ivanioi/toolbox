@@ -2,6 +2,7 @@ package org.example.toolboxbackend.web.controllers.upload;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.example.toolboxbackend.web.enums.ErrorCode;
 import org.example.toolboxbackend.web.exceptions.BusinessException;
 import org.example.toolboxbackend.web.pojo.web.Rsp;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/api/upload")
+@Tag(name = "FileUpload", description = "文件上传接口")
 public class SimpleFileUploadController {
     @Value("${toolbox.upload.path}")
     private String rootPath;

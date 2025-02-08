@@ -1,5 +1,6 @@
 package org.example.toolboxbackend.web.controllers.features;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/feature/cheatsheet")
 @Validated
+@Tag(name = "CheatSheet", description = "备忘录管理接口")
 public class CheatSheetController {
     @Resource
     private CheatSheetMapper cheatSheetMapper;

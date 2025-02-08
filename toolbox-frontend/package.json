@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "genAPI": "npx sta -p http://127.0.0.1:8080/v3/api-docs -o './src/api' --js  --axios "
+    "genAPI": "npx sta -p http://127.0.0.1:8080/v3/api-docs -o './src/api' --module-name-first-tag --js  --axios "
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",

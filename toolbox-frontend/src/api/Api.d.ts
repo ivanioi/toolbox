@@ -16,12 +16,27 @@ export interface RspString {
   desc?: string;
   data?: string;
 }
-export interface AddCheatSheetReq {
-  title: string;
-  language?: string;
-  tags?: string;
-  filePath: string;
-  type: string;
+export interface LeetCodeUpdateREQ {
+  /** @format int64 */
+  id: number;
+  name: string;
+  link: string;
+  mainType: string;
+  subType: string;
+  questionTags?: string;
+  origin: string;
+  /**
+   * @format int32
+   * @min 0
+   * @max 1
+   */
+  isIconic: number;
+  /**
+   * @format int32
+   * @min 0
+   * @max 2
+   */
+  level: number;
 }
 export interface Rsp {
   success?: string;
@@ -29,6 +44,56 @@ export interface Rsp {
   msg?: string;
   desc?: string;
   data?: object;
+}
+export interface LeetCodeQueryREQ {
+  mainType: string;
+  subType: string;
+  questionTags?: string;
+  /**
+   * @format int32
+   * @min 0
+   * @max 4
+   */
+  proficiencyRating: number;
+  /**
+   * @format int32
+   * @min 0
+   * @max 2
+   */
+  level: number;
+  /**
+   * @format int32
+   * @min 0
+   * @max 1
+   */
+  status: number;
+}
+export interface LeetCodeAddREQ {
+  name: string;
+  link: string;
+  mainType: string;
+  subType: string;
+  questionTags?: string;
+  origin: string;
+  /**
+   * @format int32
+   * @min 0
+   * @max 1
+   */
+  isIconic: number;
+  /**
+   * @format int32
+   * @min 0
+   * @max 2
+   */
+  level: number;
+}
+export interface AddCheatSheetReq {
+  title: string;
+  language?: string;
+  tags?: string;
+  filePath: string;
+  type: string;
 }
 export interface CheatSheetRspPOJO {
   id?: string;
@@ -149,11 +214,11 @@ export declare class HttpClient<SecurityDataType = unknown> {
  * @baseUrl http://127.0.0.1:8080
  */
 export declare class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  api: {
+  fileUpload: {
     /**
      * No description
      *
-     * @tags simple-file-upload-controller
+     * @tags FileUpload
      * @name UploadFile
      * @summary 通用文件上传接口
      * @request POST:/api/upload/simple
@@ -172,14 +237,88 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
       },
       params?: RequestParams,
     ) => Promise<AxiosResponse<RspString>>;
+  };
+  leetCode: {
     /**
      * No description
      *
-     * @tags cheat-sheet-controller
+     * @tags LeetCode
+     * @name UpdateQuestion
+     * @request POST:/api/feature/leetcode/update
+     */
+    updateQuestion: (data: LeetCodeUpdateREQ, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name QueryQuestions
+     * @request POST:/api/feature/leetcode/query
+     */
+    queryQuestions: (data: LeetCodeQueryREQ, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name AddQuestion
+     * @request POST:/api/feature/leetcode/add
+     */
+    addQuestion: (data: LeetCodeAddREQ, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name SelectFilterColumns
+     * @request GET:/api/feature/leetcode/filters
+     */
+    selectFilterColumns: (params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name DeleteQuestion
+     * @request GET:/api/feature/leetcode/delete
+     */
+    deleteQuestion: (
+      query: {
+        /** @format int64 */
+        id: number;
+      },
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<Rsp>>;
+  };
+  cheatSheet: {
+    /**
+     * No description
+     *
+     * @tags CheatSheet
      * @name InsertOne
      * @request POST:/api/feature/cheatsheet/insertOne
      */
     insertOne: (data: AddCheatSheetReq, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    /**
+     * No description
+     *
+     * @tags CheatSheet
+     * @name Query
+     * @request GET:/api/feature/cheatsheet/query
+     */
+    query: (
+      query?: {
+        title?: string;
+        tag?: string;
+      },
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<RspQueryCheatSheetRsp>>;
+    /**
+     * No description
+     *
+     * @tags CheatSheet
+     * @name DeleteOne
+     * @request GET:/api/feature/cheatsheet/deleteOne/{id}
+     */
+    deleteOne: (id: number, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+  };
+  helloWorldController: {
     /**
      * @description Test Hello World API
      *
@@ -194,32 +333,12 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
       },
       params?: RequestParams,
     ) => Promise<AxiosResponse<RspString>>;
+  };
+  exchangeRate: {
     /**
      * No description
      *
-     * @tags cheat-sheet-controller
-     * @name Query
-     * @request GET:/api/feature/cheatsheet/query
-     */
-    query: (
-      query?: {
-        title?: string;
-        tag?: string;
-      },
-      params?: RequestParams,
-    ) => Promise<AxiosResponse<RspQueryCheatSheetRsp>>;
-    /**
-     * No description
-     *
-     * @tags cheat-sheet-controller
-     * @name DeleteOne
-     * @request GET:/api/feature/cheatsheet/deleteOne/{id}
-     */
-    deleteOne: (id: number, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
-    /**
-     * No description
-     *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name GetExchangeRate
      * @request GET:/api/exchangerate@{date}/{currencyShortName}
      */
@@ -231,7 +350,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
     /**
      * No description
      *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name GetExchangeRateHistory
      * @request GET:/api/exchangerate/history/{baseCurrency}/{compareCurrency}
      */
@@ -243,7 +362,7 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
     /**
      * No description
      *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name Currencies
      * @request GET:/api/currenices
      */

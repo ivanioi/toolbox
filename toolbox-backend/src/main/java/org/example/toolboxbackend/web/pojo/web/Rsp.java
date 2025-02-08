@@ -26,7 +26,9 @@ public class Rsp<T> {
     private String desc;
     private T data;
 
-
+    public static Rsp success() {
+        return Rsp.builder().success("1").code("-1").msg("success").desc("success").data(null).build();
+    }
     public static <T> Rsp<T> success(T data){
         return Rsp.<T>builder().success("1").code("-1").msg("success").desc("success").data(data).build();
     }

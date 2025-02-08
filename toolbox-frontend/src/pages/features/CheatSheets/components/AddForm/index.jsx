@@ -19,6 +19,7 @@ export default function AddForm({ onSubmit, tags = [] }) {
     const [fileType, setFileType] = useState(1);
     const [fileUploadSuccess, setFileUploadSuccess] = useState(false)
 
+    const fileAPI = new Api().fileUpload;
     const { alertSuccess, alertWarning, alertError } = useAlert()
     function handleSubmit() {
         if (titleField != '' && languageField != '' && tagsField.length != 0 && filePathField != null) {
@@ -32,7 +33,7 @@ export default function AddForm({ onSubmit, tags = [] }) {
         if (files.length == 0) return;
         let formData = new FormData();
         formData.append('file', files[0], files[0].name)
-        new Api().api.uploadFile({ feature: moduleName }, formData).then(({ data }) => {
+        fileAPI.uploadFile({ feature: moduleName }, formData).then(({ data }) => {
             if (data.success == '1') {
                 alertSuccess('success', '文件上传成功.')
                 setFilePathField(data.data)

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.toolboxbackend.web.mapper.LeetCodeMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="link" column="link" jdbcType="VARCHAR"/>
+            <result property="mainType" column="main_type" jdbcType="VARCHAR"/>
+            <result property="subType" column="sub_type" jdbcType="VARCHAR"/>
+            <result property="isIconic" column="is_iconic" jdbcType="TINYINT"/>
+            <result property="level" column="level" jdbcType="TINYINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="proficiencyRating" column="proficiency_rating" jdbcType="TINYINT"/>
+            <result property="questionTags" column="question_tags" jdbcType="VARCHAR"/>
+            <result property="origin" column="origin" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,link,
+        main_type,sub_type,is_iconic,
+        level,status,proficiency_rating,
+        question_tags,origin
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from leetcode
+        where  id = #{id,jdbcType=BIGINT} 
+    </select>
+    <select id="selectBySelective" parameterType="org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeQueryREQ" resultType="arraylist" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from leetcode
+        <where>
+            <if test="mainType != null" >
+                <foreach open="main_type in ( " collection="mainType.split(',')" item="type" separator=" , " close=")">
+                    #{type}
+                </foreach>
+            </if>
+            <if test="subType != null" >
+                AND
+                <foreach collection="subType.split(',')" item="type" open="sub_type in (" separator=" , " close=")">
+                     #{type}
+                </foreach>
+            </if>
+            <if test="questionTags != null" >
+                AND
+                <foreach collection="questionTags.split(',')" item="tag" open="(" separator=" OR " close=")">
+                    question_tags like concat('%', #{tag} ,'%')
+                </foreach>
+            </if>
+            <if test="proficiencyRating != null">
+                AND
+                <foreach collection="proficiencyRating.split(',')" item="rating" open=" proficiency_rating in (" separator=" , " close=")">
+                    #{rating} + 0
+                </foreach>
+            </if>
+            <if test="level != null">
+                AND
+                <foreach collection="level.split(',')" item="rating" open=" level in (" separator=" , " close=")">
+                    #{rating} + 0
+                </foreach>
+            </if>
+            <if test="status != null">
+                AND
+                <foreach collection="status.split(',')" item="val" open=" status in (" separator=" , " close=")">
+                    #{val} + 0
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from leetcode
+        where  id = #{id,jdbcType=BIGINT} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO" useGeneratedKeys="true">
+        insert into leetcode
+        ( id,name,link
+        ,main_type,sub_type,is_iconic
+        ,level,status,proficiency_rating
+        ,question_tags,origin)
+        values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{link,jdbcType=VARCHAR}
+        ,#{mainType,jdbcType=VARCHAR},#{subType,jdbcType=VARCHAR},#{isIconic,jdbcType=TINYINT}
+        ,#{level,jdbcType=TINYINT},#{status,jdbcType=TINYINT},#{proficiencyRating,jdbcType=TINYINT}
+        ,#{questionTags,jdbcType=VARCHAR},#{origin,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO" useGeneratedKeys="true">
+        insert into leetcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="name != null">name,</if>
+                <if test="link != null">link,</if>
+                <if test="mainType != null">main_type,</if>
+                <if test="subType != null">sub_type,</if>
+                <if test="isIconic != null">is_iconic,</if>
+                <if test="level != null">level,</if>
+                <if test="status != null">status,</if>
+                <if test="proficiencyRating != null">proficiency_rating,</if>
+                <if test="questionTags != null">question_tags,</if>
+                <if test="origin != null">origin,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=BIGINT},</if>
+                <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+                <if test="link != null">#{link,jdbcType=VARCHAR},</if>
+                <if test="mainType != null">#{mainType,jdbcType=VARCHAR},</if>
+                <if test="subType != null">#{subType,jdbcType=VARCHAR},</if>
+                <if test="isIconic != null">#{isIconic,jdbcType=TINYINT},</if>
+                <if test="level != null">#{level,jdbcType=TINYINT},</if>
+                <if test="status != null">#{status,jdbcType=TINYINT},</if>
+                <if test="proficiencyRating != null">#{proficiencyRating,jdbcType=TINYINT},</if>
+                <if test="questionTags != null">#{questionTags,jdbcType=VARCHAR},</if>
+                <if test="origin != null">#{origin,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+        update leetcode
+        <set>
+                <if test="name != null">
+                    name = #{name,jdbcType=VARCHAR},
+                </if>
+                <if test="link != null">
+                    link = #{link,jdbcType=VARCHAR},
+                </if>
+                <if test="mainType != null">
+                    main_type = #{mainType,jdbcType=VARCHAR},
+                </if>
+                <if test="subType != null">
+                    <if test="subType == ''">
+                        sub_type = null,
+                    </if>
+                    <if test="subType != ''">
+                        sub_type = #{subType,jdbcType=VARCHAR},
+                    </if>
+                </if>
+                <if test="isIconic != null">
+                    is_iconic = #{isIconic,jdbcType=TINYINT},
+                </if>
+                <if test="level != null">
+                    level = #{level,jdbcType=TINYINT},
+                </if>
+                <if test="status != null">
+                    status = #{status,jdbcType=TINYINT},
+                </if>
+                <if test="proficiencyRating != null">
+                    proficiency_rating = #{proficiencyRating,jdbcType=TINYINT},
+                </if>
+                <if test="questionTags != null">
+                    <if test="questionTags == ''">
+                        question_tags = null,
+                    </if>
+                    <if test="questionTags != ''">
+                        question_tags = #{questionTags,jdbcType=VARCHAR},
+                    </if>
+                </if>
+                <if test="origin != null">
+                    origin = #{origin,jdbcType=VARCHAR},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=BIGINT} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+        update leetcode
+        set 
+            name =  #{name,jdbcType=VARCHAR},
+            link =  #{link,jdbcType=VARCHAR},
+            main_type =  #{mainType,jdbcType=VARCHAR},
+            sub_type =  #{subType,jdbcType=VARCHAR},
+            is_iconic =  #{isIconic,jdbcType=TINYINT},
+            level =  #{level,jdbcType=TINYINT},
+            status =  #{status,jdbcType=TINYINT},
+            proficiency_rating =  #{proficiencyRating,jdbcType=TINYINT},
+            question_tags =  #{questionTags,jdbcType=VARCHAR},
+            origin =  #{origin,jdbcType=VARCHAR}
+        where   id = #{id,jdbcType=BIGINT} 
+    </update>
+</mapper>
