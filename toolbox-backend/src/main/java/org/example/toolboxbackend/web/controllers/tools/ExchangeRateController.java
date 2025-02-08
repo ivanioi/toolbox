@@ -1,5 +1,6 @@
 package org.example.toolboxbackend.web.controllers.tools;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.example.toolboxbackend.web.pojo.ExchangeRateHistoryPOJO;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping("/api")
+@Tag(name = "ExchangeRate", description = "汇率转换接口")
 public class ExchangeRateController {
 
     @Resource

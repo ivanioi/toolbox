@@ -7,6 +7,7 @@ import CheatSheets from "../pages/features/CheatSheets";
 import ToolParentPage from "../pages/main/components/toolParentRoute";
 import HomePage from "../pages/main/components/home";
 import EnvelopEstimation from "../pages/tools/EnvelopEstimation";
+import { Quiz } from "@mui/icons-material";
 import T1 from "../pages/tools/T1";
 import T2 from "../pages/tools/T2";
 import T3 from "../pages/tools/T3";
@@ -15,6 +16,7 @@ import T4 from "../pages/tools/T4";
 import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck, Calculate, Functions } from "@mui/icons-material";
 import ExchangeRate from "../pages/tools/ExchangeRate";
 import { patch } from "@mui/material";
+import LeetCodePanel from "../pages/features/LeetCodePanel";
 
 // features 不支持目录分类
 // tools 只支持二级目录
@@ -41,6 +43,13 @@ const routeConfigurations = [
                         title: 'Cheat Sheets',
                         desc: 'xxxxxxxxxx',
                         element: <CheatSheets />
+                    },
+                    {
+                        path: 'leetcode',
+                        icon: <Quiz />,
+                        title: 'LeetCode',
+                        desc: 'LeetCode Management Panel',
+                        element: <LeetCodePanel />
                     }
                 ]
             },

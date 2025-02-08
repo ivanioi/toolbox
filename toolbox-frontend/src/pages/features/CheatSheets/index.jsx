@@ -17,6 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { PostAdd } from '@mui/icons-material';
 import DirectionsIcon from '@mui/icons-material/Directions';
+import { Api } from "../../../api/Api";
 
 
 export default function CheatSheets() {
@@ -44,6 +45,7 @@ export default function CheatSheets() {
 
     const { alertSuccess, alertError } = useAlert()
     const dialogTo = useDialog()
+    const API = new Api().cheatSheet;
 
     useEffect(() => {
         handleQuery()
@@ -51,13 +53,17 @@ export default function CheatSheets() {
 
 
     function handleQuery() {
-        sendHttp('query', [{ title: searchTitle.trim(), tag: selectedTag.title.trim() == 'All' ? '' : selectedTag.title.trim() }], (data) => {
-            setCheatSheets(data.data.list)
-            setTagSource(data.data.tags)
-            alertSuccess(data.msg)
-        }, (data) => {
-            alertError(data.msg)
-        })
+        API.query({ title: searchTitle.trim(), tag: selectedTag.title.trim() == 'All' ? '' : selectedTag.title.trim() }).then(
+            ({ data }) => {
+                if (data.success == '1') {
+                    setCheatSheets(data.data.list)
+                    setTagSource(data.data.tags)
+                    alertSuccess(data.msg)
+                } else {
+                    alertError(data.msg)
+                }
+            }
+        )
     }
     function handleClickTag(tag) {
         setSelectedTag(tag)
@@ -72,32 +78,35 @@ export default function CheatSheets() {
     // Add 
     function handleAddCheatsheet(title, language, tags, filePath, type) {
         setAddIsOpened(false)
-        sendHttp('insertOne', [
-            {
-                title,
-                language,
-                tags: tags.join(),
-                filePath,
-                type
+        API.insertOne({
+            title,
+            language,
+            tags: tags.join(),
+            filePath,
+            type
+        }, ({ data }) => {
+            if (data.success == '1') {
+                alertSuccess(data.msg)
+                refresh()
+            } else {
+                alertError(data.msg)
             }
-        ], (data) => {
-            alertSuccess(data.msg)
-            refresh()
-        }, (data) => {
-            alertError(data.msg)
         })
     }
 
     // Delete 
     function handleDelete(title, id) {
         dialogTo('Tip', `请确定是否删除 ${title} 备忘录.`, () => {
-            sendHttp('deleteOne', [id], (data) => {
-                alertSuccess(data.msg)
-                refresh()
-            }, (data) => {
-                alertError(data.msg)
+            API.deleteOne(id, ({ data }) => {
+                if (data.success == '1') {
+                    alertSuccess(data.msg)
+                    refresh()
+                } else {
+                    alertError(data.msg)
+                }
             })
         })
+
 
     }
 

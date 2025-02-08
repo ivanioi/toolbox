@@ -99,11 +99,11 @@ export class HttpClient {
  * @baseUrl http://127.0.0.1:8080
  */
 export class Api extends HttpClient {
-  api = {
+  fileUpload = {
     /**
      * No description
      *
-     * @tags simple-file-upload-controller
+     * @tags FileUpload
      * @name UploadFile
      * @summary 通用文件上传接口
      * @request POST:/api/upload/simple
@@ -118,10 +118,86 @@ export class Api extends HttpClient {
         format: "json",
         ...params,
       }),
+  };
+  leetCode = {
     /**
      * No description
      *
-     * @tags cheat-sheet-controller
+     * @tags LeetCode
+     * @name UpdateQuestion
+     * @request POST:/api/feature/leetcode/update
+     */
+    updateQuestion: (data, params = {}) =>
+      this.request({
+        path: `/api/feature/leetcode/update`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name QueryQuestions
+     * @request POST:/api/feature/leetcode/query
+     */
+    queryQuestions: (data, params = {}) =>
+      this.request({
+        path: `/api/feature/leetcode/query`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name AddQuestion
+     * @request POST:/api/feature/leetcode/add
+     */
+    addQuestion: (data, params = {}) =>
+      this.request({
+        path: `/api/feature/leetcode/add`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name SelectFilterColumns
+     * @request GET:/api/feature/leetcode/filters
+     */
+    selectFilterColumns: (params = {}) =>
+      this.request({
+        path: `/api/feature/leetcode/filters`,
+        method: "GET",
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags LeetCode
+     * @name DeleteQuestion
+     * @request GET:/api/feature/leetcode/delete
+     */
+    deleteQuestion: (query, params = {}) =>
+      this.request({
+        path: `/api/feature/leetcode/delete`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+  };
+  cheatSheet = {
+    /**
+     * No description
+     *
+     * @tags CheatSheet
      * @name InsertOne
      * @request POST:/api/feature/cheatsheet/insertOne
      */
@@ -133,6 +209,35 @@ export class Api extends HttpClient {
         type: ContentType.Json,
         ...params,
       }),
+    /**
+     * No description
+     *
+     * @tags CheatSheet
+     * @name Query
+     * @request GET:/api/feature/cheatsheet/query
+     */
+    query: (query, params = {}) =>
+      this.request({
+        path: `/api/feature/cheatsheet/query`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags CheatSheet
+     * @name DeleteOne
+     * @request GET:/api/feature/cheatsheet/deleteOne/{id}
+     */
+    deleteOne: (id, params = {}) =>
+      this.request({
+        path: `/api/feature/cheatsheet/deleteOne/${id}`,
+        method: "GET",
+        ...params,
+      }),
+  };
+  helloWorldController = {
     /**
      * @description Test Hello World API
      *
@@ -148,37 +253,12 @@ export class Api extends HttpClient {
         query: query,
         ...params,
       }),
+  };
+  exchangeRate = {
     /**
      * No description
      *
-     * @tags cheat-sheet-controller
-     * @name Query
-     * @request GET:/api/feature/cheatsheet/query
-     */
-    query: (query, params = {}) =>
-      this.request({
-        path: `/api/feature/cheatsheet/query`,
-        method: "GET",
-        query: query,
-        ...params,
-      }),
-    /**
-     * No description
-     *
-     * @tags cheat-sheet-controller
-     * @name DeleteOne
-     * @request GET:/api/feature/cheatsheet/deleteOne/{id}
-     */
-    deleteOne: (id, params = {}) =>
-      this.request({
-        path: `/api/feature/cheatsheet/deleteOne/${id}`,
-        method: "GET",
-        ...params,
-      }),
-    /**
-     * No description
-     *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name GetExchangeRate
      * @request GET:/api/exchangerate@{date}/{currencyShortName}
      */
@@ -191,7 +271,7 @@ export class Api extends HttpClient {
     /**
      * No description
      *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name GetExchangeRateHistory
      * @request GET:/api/exchangerate/history/{baseCurrency}/{compareCurrency}
      */
@@ -204,7 +284,7 @@ export class Api extends HttpClient {
     /**
      * No description
      *
-     * @tags exchange-rate-controller
+     * @tags ExchangeRate
      * @name Currencies
      * @request GET:/api/currenices
      */

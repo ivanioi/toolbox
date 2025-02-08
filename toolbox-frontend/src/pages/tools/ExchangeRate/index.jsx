@@ -3,10 +3,11 @@ import { Select, MenuItem, TextField, Autocomplete, OutlinedInput, Typography, a
 import styles from './index.module.css'
 import clsx from 'clsx';
 import { LineChart } from '@mui/x-charts'
-import { sendHttp } from '@/src/utils/ToolUtils'
 import { useAlert } from '../../../utils/AlertUtils';
 import { format, getUnixTime, fromUnixTime, getMonth } from 'date-fns'
+import { Api } from '../../../api/Api';
 export default function ExchangeRate() {
+    const API = new Api().exchangeRate;
     const { alertError } = useAlert()
 
     const [currencyOptions, setCurrencyOptions] = React.useState([])
@@ -17,54 +18,59 @@ export default function ExchangeRate() {
     const [yDataSource, setYDataSource] = React.useState([])
 
     React.useEffect(() => {
-        sendHttp("currencies", [],
-            (rsp) => {
-                if (rsp.data.total > '0') {
-                    setCurrencyOptions(Object.getOwnPropertyNames(rsp.data.currenices).map(item => {
+        API.currencies().then(({ data }) => {
+            if (data.success == '1') {
+                if (data.data.total > '0') {
+                    setCurrencyOptions(Object.getOwnPropertyNames(data.data.currenices).map(item => {
                         return {
-                            label: rsp.data.currenices[item] + "@" + item,
+                            label: data.data.currenices[item] + "@" + item,
                             value: item
                         }
                     }))
                 }
-            },
-            alertError
-        )
-        sendHttp("getExchangeRate", [format(new Date(), "yyyy-MM-dd"), baseCurrency.value],
-            (rsp) => {
-                setBaseCurrency({ ...baseCurrency, exchangeRateList: rsp.data.detail })
-            },
-            alertError
-        )
+            } else {
+                alertError(data.message)
+            }
+        })
+        API.getExchangeRate(format(new Date(), "yyyy-MM-dd"), baseCurrency.value).then(({ data }) => {
+            if (data.success == '1') {
+                setBaseCurrency({ ...baseCurrency, exchangeRateList: data.detail })
+            } else {
+                alertError(data.message)
+            }
+        })
 
-        sendHttp("getExchangeRateHistory", [baseCurrency.value, comparedCurrency.value],
-            (rsp) => {
-                setXDataSource(rsp.data.history.map(item => {
+        API.getExchangeRateHistory(baseCurrency.value, comparedCurrency.value).then(({ data }) => {
+            if (data.success == '1') {
+                setXDataSource(data.history.map(item => {
                     return item.date.split("-")[1]
                 }).sort())
 
-                setYDataSource(rsp.data.history.sort((a, b) => { return getUnixTime(new Date(a.date)) - getUnixTime(new Date(b.date)) }).map(
+                setYDataSource(data.history.sort((a, b) => { return getUnixTime(new Date(a.date)) - getUnixTime(new Date(b.date)) }).map(
                     item => Number.parseFloat(item.exchangeRate)
                 ))
-            },
-            alertError
-        )
+            } else {
+                alertError(data.message)
+            }
+        })
     }, [])
 
     React.useEffect(() => {
         if (comparedCurrency && comparedCurrency.value) {
-            sendHttp("getExchangeRateHistory", [baseCurrency.value, comparedCurrency?.value],
-                (rsp) => {
-                    setXDataSource(rsp.data.history.map(item => {
+            API.getExchangeRateHistory(baseCurrency.value, comparedCurrency?.value).then(({ data }) => {
+                if (data.success == '1') {
+                    setXDataSource(data.history.map(item => {
                         return item.date.split("-")[1]
                     }).sort())
 
-                    setYDataSource(rsp.data.history.sort((a, b) => { return Number.parseInt(a.date.split("-")[1]) - Number.parseInt(b.date.split("-")[1]) }).map(
+                    setYDataSource(data.history.sort((a, b) => { return getUnixTime(new Date(a.date)) - getUnixTime(new Date(b.date)) }).map(
                         item => Number.parseFloat(item.exchangeRate)
                     ))
-                },
-                alertError
-            )
+                } else {
+                    alertError(data.message)
+                }
+            })
+
         }
     }, [baseCurrency, comparedCurrency])
 
@@ -79,12 +85,13 @@ export default function ExchangeRate() {
 
     function handleBaseCurrencyChange(e, v) {
         if (v && v?.value) {
-            sendHttp("getExchangeRate", [format(new Date(), "yyyy-MM-dd"), v.value],
-                (rsp) => {
-                    setBaseCurrency({ ...v, exchangeRateList: rsp.data.detail })
-                },
-                alertError
-            )
+            API.getExchangeRate(format(new Date(), "yyyy-MM-dd"), v.value).then(({ data }) => {
+                if (data.success == '1') {
+                    setBaseCurrency({ ...v, exchangeRateList: data.detail })
+                } else {
+                    alertError(data.message)
+                }
+            })
         }
     }
     return (
