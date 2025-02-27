@@ -1,7 +1,7 @@
-package org.example.toolboxbackend.web.pojo.leetcode.rsp;
+package org.example.toolboxbackend.web.pojo.web.leetcode.rsp;
 
 import lombok.Data;
-import org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO;
+import org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO;
 
 import java.util.List;
 

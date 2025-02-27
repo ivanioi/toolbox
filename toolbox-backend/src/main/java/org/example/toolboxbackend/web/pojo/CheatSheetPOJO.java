@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CheatSheet {
+public class CheatSheetPOJO {
     private Integer id;
     private String title;
     private String language;
@@ -16,4 +16,5 @@ public class CheatSheet {
     private String textContent;
     private String imagePath;
     private String tags;
+    private String links;
 }

@@ -2,9 +2,17 @@ import * as React from 'react'
 import { Box, TextField, Autocomplete, Chip, FormLabel, RadioGroup, FormControlLabel, Radio, Typography, Button } from "@mui/material";
 import { Api } from '../../../../../api/Api';
 import { useAlert } from '../../../../../utils/AlertUtils';
-export default function AddForm({ onClose, mainTypeOpts, subTypeOpts, tagOpts, originOpts }) {
-    const API = new Api()
+export default function AddForm({ onClose }) {
+    const API = new Api().leetCode;
     const { alertSuccess, alertWarning, alertError } = useAlert()
+
+
+    // load filter options data
+    const [mainTypeOpts, setMainTypeOpts] = React.useState([])
+    const [subTypeOpts, setSubTypeOpts] = React.useState([])
+    const [tagOpts, setTagOpts] = React.useState([])
+    const [originOpts, setOriginOpts] = React.useState([])
+
 
     const [name, setName] = React.useState();
     const [link, SetLink] = React.useState();
@@ -15,10 +23,31 @@ export default function AddForm({ onClose, mainTypeOpts, subTypeOpts, tagOpts, o
     const [level, setLevel] = React.useState('0');
     const [isIconic, setIsIconic] = React.useState('1');
 
+    React.useEffect(() => {
+        API.selectFilterColumns({ mainType }).then(({ data }) => {
+            if (data.success == '1') {
+                const { mainTypes, origins, subTypes, tags } = data.data;
+                if (mainTypeOpts.length == mainTypes.length &&
+                    originOpts.length == origins.length &&
+                    subTypeOpts.length == subTypes.length &&
+                    tagOpts.length == tags.length
+                ) {
+                    return;
+                }
+                setMainTypeOpts(mainTypes.map(i => ({ title: i })))
+                setSubTypeOpts(subTypes.map(i => ({ title: i })))
+                setOriginOpts(origins.map(i => ({ title: i })))
+                setTagOpts(tags.map(i => ({ title: i })))
+            } else {
+                alertError(data.message)
+            }
+        })
+    })
+
 
     function handleAdd() {
         console.log(name, link, mainType, subType, questionTags, origin, level, isIconic)
-        API.leetCode.addQuestion({
+        API.addQuestion({
             name, link, mainType, subType, questionTags, origin, level, isIconic
         }).then(({ data }) => {
             if (data.success == '1') {

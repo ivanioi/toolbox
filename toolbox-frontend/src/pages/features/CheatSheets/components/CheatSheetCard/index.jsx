@@ -1,7 +1,7 @@
 import styles from './cheatsheetCard.module.css'
 import clsx from 'clsx'
 import Highlight from 'react-highlight'
-import { Typography, Chip } from '@mui/material'
+import { Typography, Chip, Link } from '@mui/material'
 import { Code, DeleteOutline, Fullscreen } from '@mui/icons-material'
 import { useState } from 'react'
 /**
@@ -13,11 +13,11 @@ import { useState } from 'react'
  * @returns 
  */
 export default function CheatSheetCard(
-    { id, title = 'default', tags = "", content = 'default', language, type, onDelete, onClickTag }
+    { id, title = 'default', tags = "", content = 'default', language, type, onDelete, onClickTag, links = "" }
 ) {
 
     const [isFullScreen, setIsFullScreen] = useState(false)
-
+    const linkList = links?.split(",")
     return (
         <>
             <div className={clsx(isFullScreen ? styles.cardContainerBig : styles.cardContainer)}>
@@ -33,6 +33,17 @@ export default function CheatSheetCard(
                     {
                         tags.split(",").map(item => {
                             return <Chip color="success" key={item} label={item} variant="outlined" onClick={() => onClickTag({ title: item })} />
+                        })
+                    }
+                </div>
+                <div className={clsx(styles.cardTags)}>
+                    {
+                        linkList?.map(item => {
+                            const [name, link] = item.split("@!@")
+                            return <Link key={link} href={link} target="_blank" rel="noreferrer" >
+                                <Chip color="warning" label={name} variant="outlined">
+                                </Chip>
+                            </Link>
                         })
                     }
                 </div>

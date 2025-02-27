@@ -1,4 +1,4 @@
-package org.example.toolboxbackend.web.pojo.leetcode.req;
+package org.example.toolboxbackend.web.pojo.web.leetcode.req;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Max;

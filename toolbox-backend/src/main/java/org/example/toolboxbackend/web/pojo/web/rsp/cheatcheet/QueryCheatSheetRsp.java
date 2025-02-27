@@ -10,6 +10,6 @@ import java.util.List;
 @Data
 @Builder
 public class QueryCheatSheetRsp {
-    private List<CheatSheetRspPOJO> list;
+    private List<CheatSheetRsp> list;
     private List<String> tags;
 }

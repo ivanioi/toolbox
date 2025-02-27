@@ -76,15 +76,17 @@ export default function CheatSheets() {
     }
 
     // Add 
-    function handleAddCheatsheet(title, language, tags, filePath, type) {
+    function handleAddCheatsheet(title, language, tags, filePath, type, content, links) {
         setAddIsOpened(false)
         API.insertOne({
             title,
             language,
             tags: tags.join(),
             filePath,
-            type
-        }, ({ data }) => {
+            type,
+            content,
+            links
+        }).then(({ data }) => {
             if (data.success == '1') {
                 alertSuccess(data.msg)
                 refresh()
@@ -97,7 +99,7 @@ export default function CheatSheets() {
     // Delete 
     function handleDelete(title, id) {
         dialogTo('Tip', `请确定是否删除 ${title} 备忘录.`, () => {
-            API.deleteOne(id, ({ data }) => {
+            API.deleteOne(id).then(({ data }) => {
                 if (data.success == '1') {
                     alertSuccess(data.msg)
                     refresh()

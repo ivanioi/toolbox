@@ -2,9 +2,17 @@ import * as React from 'react'
 import { Box, TextField, Autocomplete, Chip, FormLabel, RadioGroup, FormControlLabel, Radio, Typography, Button } from "@mui/material";
 import { Api } from '../../../../../api/Api';
 import { useAlert } from '../../../../../utils/AlertUtils';
-export default function EditForm({ onClose, mainTypeOpts, subTypeOpts, tagOpts, originOpts, question }) {
+export default function EditForm({ onClose, question }) {
+    console.log(question)
     const API = new Api().leetCode
     const { alertSuccess, alertWarning, alertError } = useAlert()
+
+
+    // load filter options data
+    const [mainTypeOpts, setMainTypeOpts] = React.useState([])
+    const [subTypeOpts, setSubTypeOpts] = React.useState([])
+    const [tagOpts, setTagOpts] = React.useState([])
+    const [originOpts, setOriginOpts] = React.useState([])
 
     const [name, setName] = React.useState(question.name);
     const [link, SetLink] = React.useState(question.link);
@@ -14,6 +22,27 @@ export default function EditForm({ onClose, mainTypeOpts, subTypeOpts, tagOpts, 
     const [origin, setOrigin] = React.useState(question.origin);
     const [level, setLevel] = React.useState(question.level);
     const [isIconic, setIsIconic] = React.useState(question.isIconic);
+
+    React.useEffect(() => {
+        API.selectFilterColumns({ mainType }).then(({ data }) => {
+            if (data.success == '1') {
+                const { mainTypes, origins, subTypes, tags } = data.data;
+                if (mainTypeOpts.length == mainTypes.length &&
+                    originOpts.length == origins.length &&
+                    subTypeOpts.length == subTypes.length &&
+                    tagOpts.length == tags.length
+                ) {
+                    return;
+                }
+                setMainTypeOpts(mainTypes.map(i => ({ title: i })))
+                setSubTypeOpts(subTypes.map(i => ({ title: i })))
+                setOriginOpts(origins.map(i => ({ title: i })))
+                setTagOpts(tags.map(i => ({ title: i })))
+            } else {
+                alertError(data.message)
+            }
+        })
+    })
 
     function handleUpdate() {
         API.updateQuestion({

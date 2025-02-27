@@ -5,17 +5,18 @@
 <mapper namespace="org.example.toolboxbackend.web.mapper.CheatSheetMapper">
 
     <insert id="insertOne"
-            parameterType="org.example.toolboxbackend.web.pojo.CheatSheet"
+            parameterType="org.example.toolboxbackend.web.pojo.CheatSheetPOJO"
             useGeneratedKeys="true"
             keyProperty="id"
     >
-        insert into cheatsheet(title, language, type, text_content, image_path, tags)
-        values(#{title}, #{language}, #{type}, #{textContent}, #{imagePath}, #{tags})
+        insert into cheatsheet(title, language, type, text_content, image_path, tags, links)
+        values(#{title}, #{language}, #{type}, #{textContent}, #{imagePath}, #{tags}, #{links})
     </insert>
 
-    <select id="query" resultType="org.example.toolboxbackend.web.pojo.web.rsp.cheatcheet.CheatSheetRspPOJO">
+    <select id="query" resultType="org.example.toolboxbackend.web.pojo.web.rsp.cheatcheet.CheatSheetRsp">
         select id, title, language, tags, type,
-               ( case when type = 0 then image_path else text_content end ) as content
+               ( case when type = 0 then image_path else text_content end ) as content,
+                links
         from cheatsheet
         <where>
             <if test=" title != null and  title != '' ">

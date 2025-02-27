@@ -1,17 +1,18 @@
 package org.example.toolboxbackend.web.controllers.features;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.Null;
 import org.apache.commons.lang3.StringUtils;
 import org.example.toolboxbackend.web.converters.LeetCodeConvert;
 import org.example.toolboxbackend.web.mapper.LeetCodeMapper;
-import org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO;
-import org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeAddREQ;
-import org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeQueryREQ;
-import org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeUpdateREQ;
-import org.example.toolboxbackend.web.pojo.leetcode.rsp.LeetCodeFiltersRSP;
-import org.example.toolboxbackend.web.pojo.leetcode.rsp.LeetCodeQueryRSP;
+import org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO;
+import org.example.toolboxbackend.web.pojo.web.leetcode.req.LeetCodeAddREQ;
+import org.example.toolboxbackend.web.pojo.web.leetcode.req.LeetCodeQueryREQ;
+import org.example.toolboxbackend.web.pojo.web.leetcode.req.LeetCodeUpdateREQ;
+import org.example.toolboxbackend.web.pojo.web.leetcode.rsp.LeetCodeFiltersRSP;
+import org.example.toolboxbackend.web.pojo.web.leetcode.rsp.LeetCodeQueryRSP;
 import org.example.toolboxbackend.web.pojo.web.Rsp;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -88,9 +89,9 @@ public class LeetCodePanelController {
     }
 
     @GetMapping("filters")
-    public Rsp selectFilterColumns() {
+    public Rsp selectFilterColumns(@Validated @Nullable @RequestParam String mainType) {
         final List<String> mainTypes = leetcodeMapper.selectAllMainType();
-        final List<String> subTypes = leetcodeMapper.selectAllSubType();
+        final List<String> subTypes = leetcodeMapper.selectAllSubType(StringUtils.isBlank(mainType) ? null : mainType);
         List<String> tags = leetcodeMapper.selectAllQuestionTags().stream().map(tag -> {
             if (tag != null) return tag.split(",");
             return new String[0];

@@ -172,11 +172,10 @@ export class Api extends HttpClient {
      * @name SelectFilterColumns
      * @request GET:/api/feature/leetcode/filters
      */
-    selectFilterColumns: (query, params = {}) =>
+    selectFilterColumns: (params = {}) =>
       this.request({
         path: `/api/feature/leetcode/filters`,
         method: "GET",
-        query: query,
         ...params,
       }),
     /**

@@ -6,8 +6,7 @@
     align-items: center;
     min-width: 25vw;
     max-width: 25vw;
-    height: 85%;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 .topContainer {

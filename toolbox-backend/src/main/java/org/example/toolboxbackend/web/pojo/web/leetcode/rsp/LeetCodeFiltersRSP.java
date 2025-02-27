@@ -1,4 +1,4 @@
-package org.example.toolboxbackend.web.pojo.leetcode.rsp;
+package org.example.toolboxbackend.web.pojo.web.leetcode.rsp;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

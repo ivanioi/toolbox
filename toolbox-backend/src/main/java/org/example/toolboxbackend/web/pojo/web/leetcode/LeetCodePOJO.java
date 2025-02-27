@@ -1,4 +1,4 @@
-package org.example.toolboxbackend.web.pojo.leetcode;
+package org.example.toolboxbackend.web.pojo.web.leetcode;
 
 import lombok.Data;
 

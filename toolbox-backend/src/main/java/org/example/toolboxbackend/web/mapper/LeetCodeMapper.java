@@ -1,8 +1,8 @@
 package org.example.toolboxbackend.web.mapper;
 
 import org.apache.ibatis.annotations.Select;
-import org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO;
-import org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeQueryREQ;
+import org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO;
+import org.example.toolboxbackend.web.pojo.web.leetcode.req.LeetCodeQueryREQ;
 
 import java.util.List;
 
@@ -31,8 +31,7 @@ public interface LeetCodeMapper {
     @Select(" select distinct main_type from leetcode where main_type is not null ")
     List<String> selectAllMainType();
 
-    @Select(" select distinct sub_type from leetcode where sub_type is not null ")
-    List<String> selectAllSubType();
+    List<String> selectAllSubType(String mainType);
 
     @Select(" select distinct question_tags from leetcode where question_tags is not null ")
     List<String> selectAllQuestionTags();
