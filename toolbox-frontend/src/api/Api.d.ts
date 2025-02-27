@@ -19,24 +19,28 @@ export interface RspString {
 export interface LeetCodeUpdateREQ {
   /** @format int64 */
   id: number;
-  name: string;
-  link: string;
-  mainType: string;
-  subType: string;
+  name?: string;
+  link?: string;
+  mainType?: string;
+  subType?: string;
   questionTags?: string;
-  origin: string;
+  origin?: string;
   /**
    * @format int32
    * @min 0
    * @max 1
    */
-  isIconic: number;
+  isIconic?: number;
   /**
    * @format int32
    * @min 0
    * @max 2
    */
-  level: number;
+  level?: number;
+  /** @format int32 */
+  status?: number;
+  /** @format int32 */
+  proficiencyRating?: number;
 }
 export interface Rsp {
   success?: string;
@@ -46,27 +50,12 @@ export interface Rsp {
   data?: object;
 }
 export interface LeetCodeQueryREQ {
-  mainType: string;
-  subType: string;
+  mainType?: string;
+  subType?: string;
   questionTags?: string;
-  /**
-   * @format int32
-   * @min 0
-   * @max 4
-   */
-  proficiencyRating: number;
-  /**
-   * @format int32
-   * @min 0
-   * @max 2
-   */
-  level: number;
-  /**
-   * @format int32
-   * @min 0
-   * @max 1
-   */
-  status: number;
+  proficiencyRating?: string;
+  level?: string;
+  status?: string;
 }
 export interface LeetCodeAddREQ {
   name: string;
@@ -94,17 +83,20 @@ export interface AddCheatSheetReq {
   tags?: string;
   filePath: string;
   type: string;
+  content?: string;
+  links?: string;
 }
-export interface CheatSheetRspPOJO {
+export interface CheatSheetRsp {
   id?: string;
   title?: string;
   language?: string;
   content?: string;
   tags?: string;
   type?: string;
+  links?: string;
 }
 export interface QueryCheatSheetRsp {
-  list?: CheatSheetRspPOJO[];
+  list?: CheatSheetRsp[];
   tags?: string[];
 }
 export interface RspQueryCheatSheetRsp {
@@ -270,7 +262,12 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @name SelectFilterColumns
      * @request GET:/api/feature/leetcode/filters
      */
-    selectFilterColumns: (params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
+    selectFilterColumns: (
+      query?: {
+        mainType?: string;
+      },
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<Rsp>>;
     /**
      * No description
      *

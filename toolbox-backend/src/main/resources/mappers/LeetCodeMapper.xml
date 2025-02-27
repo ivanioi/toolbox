@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.toolboxbackend.web.mapper.LeetCodeMapper">
 
-    <resultMap id="BaseResultMap" type="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+    <resultMap id="BaseResultMap" type="org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="link" column="link" jdbcType="VARCHAR"/>
@@ -31,7 +31,7 @@
         from leetcode
         where  id = #{id,jdbcType=BIGINT} 
     </select>
-    <select id="selectBySelective" parameterType="org.example.toolboxbackend.web.pojo.leetcode.req.LeetCodeQueryREQ" resultType="arraylist" resultMap="BaseResultMap">
+    <select id="selectBySelective" parameterType="org.example.toolboxbackend.web.pojo.web.leetcode.req.LeetCodeQueryREQ" resultType="arraylist" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from leetcode
@@ -73,12 +73,23 @@
             </if>
         </where>
     </select>
+    <select id="selectAllSubType" resultType="java.lang.String">
+        select distinct sub_type
+        from leetcode
+        where sub_type is not null
+        <if test="mainType != null">
+            AND
+            <foreach open="main_type in ( " collection="mainType.split(',')" item="type" separator=" , " close=")">
+                #{type}
+            </foreach>
+        </if>
+    </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
         delete from leetcode
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO" useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO" useGeneratedKeys="true">
         insert into leetcode
         ( id,name,link
         ,main_type,sub_type,is_iconic
@@ -89,7 +100,7 @@
         ,#{level,jdbcType=TINYINT},#{status,jdbcType=TINYINT},#{proficiencyRating,jdbcType=TINYINT}
         ,#{questionTags,jdbcType=VARCHAR},#{origin,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO" useGeneratedKeys="true">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO" useGeneratedKeys="true">
         insert into leetcode
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
@@ -118,7 +129,7 @@
                 <if test="origin != null">#{origin,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+    <update id="updateByPrimaryKeySelective" parameterType="org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO">
         update leetcode
         <set>
                 <if test="name != null">
@@ -164,7 +175,7 @@
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="org.example.toolboxbackend.web.pojo.leetcode.LeetCodePOJO">
+    <update id="updateByPrimaryKey" parameterType="org.example.toolboxbackend.web.pojo.web.leetcode.LeetCodePOJO">
         update leetcode
         set 
             name =  #{name,jdbcType=VARCHAR},

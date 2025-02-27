@@ -60,7 +60,7 @@ function Row({ row: { question, subQuestions }, onUpdate, onDelete, onEdit }) {
                 name="simple-controlled"
                 defaultValue={rating}
                 onChange={(event, newValue) => {
-                    onUpdate({ id, proficiencyRating: newValue })
+                    onUpdate({ id, proficiencyRating: newValue ? newValue : 0 })
                 }}
             />
         )
@@ -118,7 +118,7 @@ function Row({ row: { question, subQuestions }, onUpdate, onDelete, onEdit }) {
         <React.Fragment>
             {_row(question, 0)}
             {
-                subQuestions.map((q, idx) => _row(q, idx, true))
+                subQuestions.map((q, idx) => _row(q, idx + 1, true))
             }
         </React.Fragment>
     );
@@ -147,8 +147,19 @@ export default function LeetCodePanel() {
     const [subTypeOpts, setSubTypeOpts] = React.useState([])
     const [tagOpts, setTagOpts] = React.useState([])
     const [originOpts, setOriginOpts] = React.useState([])
+
+    // query
+    const [mainType, setMainType] = React.useState();
+    const [subType, setSubType] = React.useState();
+    const [tags, setTags] = React.useState();
+    const [proficiencyRating, setProficiencyRating] = React.useState();
+    const [level, setLevel] = React.useState();
+    const [status, setStatus] = React.useState();
+    const [questions, setQuestions] = React.useState([]);
+    const [refresh, setRefresh] = React.useState(false)
+
     React.useEffect(() => {
-        API.selectFilterColumns().then(({ data }) => {
+        API.selectFilterColumns({ mainType }).then(({ data }) => {
             if (data.success == '1') {
                 const { mainTypes, origins, subTypes, tags } = data.data;
                 if (mainTypeOpts.length == mainTypes.length &&
@@ -167,16 +178,6 @@ export default function LeetCodePanel() {
             }
         })
     })
-
-    // query
-    const [mainType, setMainType] = React.useState();
-    const [subType, setSubType] = React.useState();
-    const [tags, setTags] = React.useState();
-    const [proficiencyRating, setProficiencyRating] = React.useState();
-    const [level, setLevel] = React.useState();
-    const [status, setStatus] = React.useState();
-    const [questions, setQuestions] = React.useState([]);
-    const [refresh, setRefresh] = React.useState(false)
 
     React.useEffect(() => {
         handleQuery();
@@ -225,6 +226,7 @@ export default function LeetCodePanel() {
     function handleClickEdit(question) {
         toggleDrawer(true, 'edit', question)
     }
+
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignContent: 'center', width: '100%' }}>
@@ -430,18 +432,11 @@ export default function LeetCodePanel() {
                     oprCode == 'add' ? (
                         <AddForm
                             onClose={() => toggleDrawer(false)}
-                            mainTypeOpts={mainTypeOpts}
-                            subTypeOpts={subTypeOpts}
-                            tagOpts={tagOpts}
-                            originOpts={originOpts} />
+                        />
                     ) : oprCode == 'edit' ? (
                         <EditForm
                             onClose={() => toggleDrawer(false)}
-                            mainTypeOpts={mainTypeOpts}
-                            subTypeOpts={subTypeOpts}
-                            tagOpts={tagOpts}
-                            originOpts={originOpts}
-                            question={oprData} />
+                        />
                     ) : <></>
                 }
 

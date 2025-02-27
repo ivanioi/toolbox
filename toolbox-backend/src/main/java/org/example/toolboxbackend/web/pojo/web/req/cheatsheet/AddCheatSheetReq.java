@@ -18,4 +18,6 @@ public class AddCheatSheetReq {
     @Min(0)
     @Max(1)
     private String type;
+    private String content;
+    private String links;
 }

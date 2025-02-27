@@ -5,11 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CheatSheetRspPOJO {
+public class CheatSheetRsp {
     private String id;
     private String title;
     private String language;
     private String content; // 图片地址或文本内容
     private String tags;
     private String type;   // TODO: 类型字段往往前后端都依赖它，如果让二者状态同步呢?
+    private String links;
 }
