@@ -3,7 +3,6 @@ import { Box, TextField, Autocomplete, Chip, FormLabel, RadioGroup, FormControlL
 import { Api } from '../../../../../api/Api';
 import { useAlert } from '../../../../../utils/AlertUtils';
 export default function EditForm({ onClose, question }) {
-    console.log(question)
     const API = new Api().leetCode
     const { alertSuccess, alertWarning, alertError } = useAlert()
 

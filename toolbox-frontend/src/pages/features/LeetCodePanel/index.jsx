@@ -436,7 +436,10 @@ export default function LeetCodePanel() {
                     ) : oprCode == 'edit' ? (
                         <EditForm
                             onClose={() => toggleDrawer(false)}
+<<<<<<< HEAD
                             question={oprData}
+=======
+>>>>>>> 06dd80710c25f7b0e1aac007b7b11e5a1bbcde1c
                         />
                     ) : <></>
                 }
