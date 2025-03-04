@@ -40,11 +40,7 @@ export default function CheatSheetCard(
                     {
                         linkList?.map(item => {
                             const [name, link] = item.split("@!@")
-<<<<<<< HEAD
                             return <Link key={link} href={link} target="_blank" rel="noreferrer" >
-=======
-                            return <Link href={link} target="_blank" rel="noreferrer" >
->>>>>>> 06dd80710c25f7b0e1aac007b7b11e5a1bbcde1c
                                 <Chip color="warning" label={name} variant="outlined">
                                 </Chip>
                             </Link>
