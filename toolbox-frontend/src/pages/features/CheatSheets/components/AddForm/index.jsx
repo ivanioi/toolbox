@@ -37,7 +37,7 @@ export default function AddForm({ onSubmit, tags = [] }) {
 
     function genLinks() {
         let validLinks = links.filter(l => l.name != '' && l.link != '');
-        return validLinks?.reduce((p, c) => p + "," + c.name + "@!@" + c.link, "").substring(1)
+        return validLinks.length != 0 ? validLinks.reduce((p, c) => p + "," + c.name + "@!@" + c.link, "").substring(1) : null;
     }
 
     function handleFileUpload(moduleName, files) {

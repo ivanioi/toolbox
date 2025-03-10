@@ -83,7 +83,8 @@
 }
 
 .cardImageBig {
-    min-width: fit-content;
+    min-width: 35vw;
+    max-width: 100%;
 }
 
 .codeFont * {

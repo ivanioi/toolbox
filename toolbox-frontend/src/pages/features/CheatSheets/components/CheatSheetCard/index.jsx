@@ -50,7 +50,7 @@ export default function CheatSheetCard(
                 <div className={clsx(styles.contentContainer)}>
                     {
                         type == '0' ?
-                            <img className={clsx(isFullScreen ? styles.cardImageBig : styles.cardImage)} src={content} /> :
+                            <img className={clsx(isFullScreen ? styles.cardImageBig : styles.cardImage)} src={import.meta.env.VITE_FILE_BASE_URL + content} /> :
                             <Highlight className={clsx(isFullScreen ? styles.codeFontBig : styles.codeFont, language)}>{content}</Highlight>
                     }
                 </div>
