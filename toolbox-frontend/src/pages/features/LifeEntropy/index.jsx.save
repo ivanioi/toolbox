@@ -1,0 +1,379 @@
+ffds
+
+fdaCimport { useEffect, useMemo, useState } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadEmittersPlugin } from "@tsparticles/plugin-emitters";
+import { loadSlim } from "@tsparticles/slim";
+import {Button, Chip, Container} from "@mui/material";
+import {
+    PsychologyAltOutlined,
+    SelfImprovementOutlined,
+    SentimentDissatisfiedOutlined,
+    SentimentSatisfiedAltOutlined
+} from "@mui/icons-material"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
+import { DateRange } from 'react-date-range';
+import { Api } from '../../../api/Api';
+import {format} from "date-fns";
+let particleConfg = {
+    collisions: {
+        enable: true,
+    },
+    color: {
+        value: ["#00ff00"] // 绿色
+    },
+    shape: {
+        type: "circle",
+    },
+    opacity: {
+        value: 1,
+    },
+    size: {
+        value: 1
+    },
+    move: {
+        enable: true,
+            speed: 1,
+            direction: "none",
+            random: true,
+            straight: false,
+            warp: true,
+            outMode: 'bounce',
+    },
+}
+
+
+function generateParticles(color, size) {
+    let particles = [];
+    if (color === 'red') {
+        for (let i = 0; i < size; i++) {
+            particles.push({
+                position: {
+                    x: Math.random() * 100,
+                    y: Math.random() * 100
+                },
+                options: {
+                    ...particleConfg,
+                    size: (Math.random() + 0.1) * 10 % 3,
+                    color: {
+                        value: ["#ff0000"]
+                    },
+                    opacity: {
+                        value: Math.random() + 0.1
+                    }
+                }
+            });
+        }
+    } else if (color === 'green') {
+        for (let i = 0; i < size; i++) {
+            particles.push({
+                position: {
+                    x: Math.random() * 100,
+                    y: Math.random() * 100
+                },
+                options: {
+                    ...particleConfg,
+                    size: (Math.random() + 0.1) * 10 % 3,
+                    color: {
+                        value: ["#00ff00"]
+                    },
+                    opacity: {
+                        value: Math.random() + 0.1
+                    }
+                }
+            });
+        }
+    }
+
+    return particles;
+}
+export default function LifeEntropy() {
+    const EntropyAPIs = new Api().entropyController
+    const [init, setInit] = useState(false);
+    /**
+     * 熵的类型分为 4 种：
+     * 1. 熵初始值(红色)
+     * 2. 逆熵初始值(绿色)
+     * 3. 熵增长值
+     * 4. 逆熵增长值
+     */
+    const [defaultRedEntropy, setDefaultRedEntropy] = useState(1000);
+    const [defaultGreenEntropy, setDefaultGreenEntropy] = useState(500);
+    const [updateRedEntropy, setUpdateRedEntropy] = useState(0);
+    const [updateGreenEntropy, setUpdateGreenEntropy] = useState(0);
+
+    /**
+     * 各类熵类型是否展示的开关
+     */
+    const [defaultRedShow, setDefaultRedShow] = useState(true);
+    const [defaultGreenShow, setDefaultGreenShow] = useState(true);
+    const [updateGreenShow, setUpdateGreenShow] = useState(true);
+    const [updateRedShow, setUpdateRedShow] = useState(true);
+
+    /**
+     * 熵对应的粒子实体
+     */
+    const [redParticles, setRedParticles] = useState([]);
+    const [greenParticles, setGreenParticles] = useState([]);
+
+    /**
+     * 熵增长值，逆熵增长值对应的日期
+     * 这两个增长值的每一次变动都会记录更新日期
+     */
+    const [datePickerShow, setDatePickerShow] = useState(false);
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ]);
+
+    // this should be run only once per application lifetime
+    useEffect(() => {
+        initParticlesEngine(async (engine) => {
+            // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
+            // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+            // starting from v2 you can add only the features you need reducing the bundle size
+            //await loadAll(engine);
+            //await loadFull(engine);
+            await loadSlim(engine);
+            await loadEmittersPlugin(engine);
+            //await loadBasic(engine);
+        }).then(() => {
+            setInit(true);
+        });
+
+        EntropyAPIs.getEntropyInfo().then(({data: {data: {
+            defaultEntropy, defaultInverseEntropy, updateEntropy, updateInverseEntropy
+        }}}) => {
+            setDefaultRedEntropy(Number.parseInt(defaultEntropy))
+            setDefaultGreenEntropy(Number.parseInt(defaultInverseEntropy))
+            setUpdateRedEntropy(Number.parseInt(updateEntropy))
+            setUpdateGreenEntropy(Number.parseInt(updateInverseEntropy))
+            setRedParticles(generateParticles('red', Number.parseInt(defaultEntropy) + Number.parseInt(updateEntropy)));
+            setGreenParticles(generateParticles('green', Number.parseInt(defaultInverseEntropy) + Number.parseInt(updateInverseEntropy)));
+        })
+    }, []);
+
+
+
+    const particlesLoaded = (container) => {
+        // console.log(container);
+
+    };
+
+
+
+    const options = useMemo(
+        () => ({
+            fullScreen: false,
+            particles: {
+                number: {
+                    value: 0
+                },
+                collisions: {
+                    enable: true
+                },
+                shape: {
+                    type: "circle"
+                },
+            },
+            manualParticles: [...redParticles, ...greenParticles],
+            background: {
+                color: "#fafafa",
+            },
+        }),
+        [redParticles, greenParticles],
+    );
+
+    /**
+     * 以下 4 个方法，当熵类型展示开关变动时会被触发
+     * handleRemoveRed
+     * handleRemoveGreen
+     * handlePlusRed
+     * handlePlusGreen
+     */
+
+    function handleRemoveRed(size) {
+        setRedParticles(v => {
+            return v.toSpliced(0, size)
+        })
+    }
+
+    function handleRemoveGreen(size) {
+        setGreenParticles(v => {
+            return v.toSpliced(0, size)
+        })
+    }
+
+    function handlePlusRed(size) {
+        setRedParticles(v => {
+            let redPs = [];
+            for (let i = 0; i < size; i++) {
+                redPs.push({
+                    position: {
+                        x: Math.random() * 100,
+                        y: Math.random() * 100
+                    },
+                    options: {
+                        ...particleConfg,
+                        size: (Math.random() + 0.1) * 10 % 3,
+                        color: {
+                            value: ["#ff0000"]
+                        },
+                        opacity: {
+                            value: 0.3
+                        }
+                    }
+                });
+            }
+            return [...v, ...redPs];
+        })
+    }
+
+    function handlePlusGreen(size) {
+        setGreenParticles(v => {
+            let greenPs = [];
+            for (let i = 0; i < size; i++) {
+                greenPs.push({
+                    position: {
+                        x: Math.random() * 100,
+                        y: Math.random() * 100
+                    },
+                    options: {
+                        ...particleConfg,
+                        size: (Math.random() + 0.1) * 10 % 3,
+                        color: {
+                            value: ["#00ff00"]
+                        },
+                        opacity: {
+                            value: 0.5
+                        }
+                    }
+                });
+            }
+            return [...v, ...greenPs];
+        })
+    }
+
+    /**
+     * 1. 开启所有类型熵的展示开关
+     * 2. 获取所有变动的熵
+     * 3. 重置变动的熵数值
+     * 4. 重置粒子实体
+     */
+    function handleReset() {
+        resetAllSwitch();
+
+    }
+
+    function resetAllSwitch() {
+        setDefaultRedShow(true);
+        setDefaultGreenShow(true);
+        setUpdateRedShow(true);
+        setUpdateGreenShow(true);
+    }
+
+
+    /**
+     * 1. 获取对应日期内熵/逆熵的变动值
+     * 2. 开启所有类型熵的展示开关
+     * 3. 重置变动的熵数值
+     * 4. 重置粒子实体
+     */
+    function handlePickDateRange(value) {
+        let pickedDateRange = value.selection;
+        setDateRange([pickedDateRange]);
+
+        console.log('start', format(new Date(pickedDateRange.startDate, 'yyyy-MM-dd')))
+        console.log('end', format(new Date(pickedDateRange.endDate, 'yyyy-MM-dd')))
+    }}
+
+
+    /**
+     * 增熵/逆熵操作
+     * type: 0 熵， 1 逆熵
+     */
+    function handleUpdate(type, size = 1) {
+        EntropyAPIs.updateEntropy({
+            type,
+            count: size
+        })
+        if (type === 0) {
+            handlePlusRed(1);
+            setUpdateRedEntropy(v => v+1);
+        } else if (type === 1) {
+            handlePlusGreen(1)
+            setUpdateGreenEntropy(v => v+1);
+        }
+    }
+
+
+    if (init) {
+        return (
+            <>
+                <Particles
+                    style={{maxHeight: '50vh !important'}}
+                    id="tsparticles"
+                    particlesLoaded={particlesLoaded}
+                    options={options}
+                />
+                <Container sx={{
+                    minWidth: "100%", paddingLeft: '0 !important', pt: 2,
+                    display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignContent: 'center', gap: 2
+
+                }}>
+                    <Chip color="error" icon={<SentimentDissatisfiedOutlined/>} label={defaultRedEntropy + updateRedEntropy} />
+                    <Chip color="success" icon={<SentimentSatisfiedAltOutlined/>} label={defaultGreenEntropy + updateGreenEntropy} />
+                    <Button onClick={() => handleUpdate(0)} color="error" variant="outlined">
+                        Red+1
+                    </Button>
+                    <Button onClick={() => handleUpdate(1)} color="success" variant="outlined">Green+1</Button>
+                    <Container sx={{width: 'max-content', position: 'relative', margin: '0 !important', padding: '0 !important'}}>
+                        <Button onClick={() => setDatePickerShow(v => !v)}  variant="outlined">Set Date Range</Button>
+                        <Container sx={{position: 'absolute', top: -400, left: 0, display: datePickerShow ? '' : 'none', width: 'max-content'}}>
+                            <DateRange
+                                moveRangeOnFirstSelection={true}
+                                retainEndDateOnFirstSelection={false}
+                                onChange={handlePickDateRange}
+                                ranges={dateRange}
+                            />
+                        </Container>
+                    </Container>
+                    <Button variant="outlined">Reset</Button>
+                    <Chip
+                        onClick={()  => {
+                            if (defaultRedShow) handleRemoveRed(defaultRedEntropy)
+                            else handlePlusRed(defaultRedEntropy)
+                            setDefaultRedShow(v => !v)
+                        }}
+                        sx={{cursor: 'pointer'}} color={defaultRedShow ? 'error' : ''} icon={<PsychologyAltOutlined/>} label={defaultRedEntropy} />
+                    <Chip
+                        onClick={() => {
+                            if (defaultGreenShow) handleRemoveGreen(defaultGreenEntropy)
+                            else handlePlusGreen(defaultGreenEntropy)
+                            setDefaultGreenShow(v => !v)
+                        }}
+                        sx={{cursor: 'pointer'}} color={defaultGreenShow ? 'success' : ''} icon={<SelfImprovementOutlined/>} label={defaultGreenEntropy}/>
+                    <Chip
+                        onClick={() => {
+                            if (updateRedShow) handleRemoveRed(updateRedEntropy)
+                            else handlePlusRed(updateRedEntropy)
+                            setUpdateRedShow(v => !v)
+                        }}
+                        sx={{cursor: 'pointer'}} color={updateRedShow ? 'error' : ''} icon={<SentimentDissatisfiedOutlined/>} label={updateRedEntropy} />
+                    <Chip
+                        onClick={() => {
+                            if (updateGreenShow) handleRemoveGreen(updateGreenEntropy)
+                            else handlePlusGreen(updateGreenEntropy)
+                            setUpdateGreenShow(v => !v)
+                        }}
+                        sx={{cursor: 'pointer'}} color={updateGreenShow ? 'success': ''} icon={<SentimentSatisfiedAltOutlined/>} label={updateGreenEntropy} />
+
+                </Container>
+            </>
+        );
+    }
+
+    return <>LifeEntropy</>;
+}

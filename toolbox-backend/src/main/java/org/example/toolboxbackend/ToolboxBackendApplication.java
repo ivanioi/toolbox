@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@MapperScan("org.example.toolboxbackend.web.mapper")
+@MapperScan("org.example.toolboxbackend.**.mapper")
 @EnableTransactionManagement
 @SpringBootApplication(scanBasePackages = "org.example.toolboxbackend")
 @ServletComponentScan(basePackages = "org.example.toolboxbackend.web")

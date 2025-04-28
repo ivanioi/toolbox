@@ -36,3 +36,17 @@ create table IF NOT EXISTS  leetcode
 
 create index leetcode_main_type_index
     on leetcode (main_type);
+
+
+create table toolbox.entropylog
+(
+    id           bigint auto_increment
+        primary key,
+    type         tinyint                  not null comment '0 熵 1 逆向熵',
+    update_count int                      not null comment '变动数值 > 0',
+    create_date  date default (curdate()) not null
+);
+
+create index entropylog_create_date_index
+    on toolbox.entropylog (create_date);
+

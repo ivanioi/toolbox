@@ -24,7 +24,7 @@ export class HttpClient {
   secure;
   format;
   constructor({ securityWorker, secure, format, ...axiosConfig } = {}) {
-    this.instance = axios.create({ ...axiosConfig, baseURL: import.meta.env.VITE_BASE_URL });
+      this.instance = axios.create({ ...axiosConfig, baseURL: import.meta.env.VITE_BASE_URL });
     this.secure = secure;
     this.format = format;
     this.securityWorker = securityWorker;
@@ -191,6 +191,37 @@ export class Api extends HttpClient {
         path: `/api/feature/leetcode/delete`,
         method: "GET",
         query: query,
+        ...params,
+      }),
+  };
+  entropyController = {
+    /**
+     * No description
+     *
+     * @tags entropy-controller
+     * @name GetEntropyInfo
+     * @request GET:/api/feature/entropy
+     */
+    getEntropyInfo: (query, params = {}) =>
+      this.request({
+        path: `/api/feature/entropy`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+    /**
+     * No description
+     *
+     * @tags entropy-controller
+     * @name UpdateEntropy
+     * @request POST:/api/feature/entropy
+     */
+    updateEntropy: (data, params = {}) =>
+      this.request({
+        path: `/api/feature/entropy`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

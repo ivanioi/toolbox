@@ -77,6 +77,19 @@ export interface LeetCodeAddREQ {
    */
   level: number;
 }
+export interface UpdateEntropyPO {
+  /**
+   * @format int32
+   * @min 0
+   * @max 1
+   */
+  type: number;
+  /**
+   * @format int32
+   * @min 1
+   */
+  count: number;
+}
 export interface AddCheatSheetReq {
   title: string;
   language?: string;
@@ -85,6 +98,23 @@ export interface AddCheatSheetReq {
   type: string;
   content?: string;
   links?: string;
+}
+export interface EntropyInfoVO {
+  /** @format int32 */
+  defaultEntropy?: number;
+  /** @format int32 */
+  defaultInverseEntropy?: number;
+  /** @format int32 */
+  updateEntropy?: number;
+  /** @format int32 */
+  updateInverseEntropy?: number;
+}
+export interface RspEntropyInfoVO {
+  success?: string;
+  code?: string;
+  msg?: string;
+  desc?: string;
+  data?: EntropyInfoVO;
 }
 export interface CheatSheetRsp {
   id?: string;
@@ -282,6 +312,32 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
       },
       params?: RequestParams,
     ) => Promise<AxiosResponse<Rsp>>;
+  };
+  entropyController: {
+    /**
+     * No description
+     *
+     * @tags entropy-controller
+     * @name GetEntropyInfo
+     * @request GET:/api/feature/entropy
+     */
+    getEntropyInfo: (
+      query?: {
+        /** @format date */
+        startDate?: string;
+        /** @format date */
+        endDate?: string;
+      },
+      params?: RequestParams,
+    ) => Promise<AxiosResponse<RspEntropyInfoVO>>;
+    /**
+     * No description
+     *
+     * @tags entropy-controller
+     * @name UpdateEntropy
+     * @request POST:/api/feature/entropy
+     */
+    updateEntropy: (data: UpdateEntropyPO, params?: RequestParams) => Promise<AxiosResponse<Rsp>>;
   };
   cheatSheet: {
     /**

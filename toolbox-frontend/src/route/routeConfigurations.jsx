@@ -13,10 +13,10 @@ import T2 from "../pages/tools/T2";
 import T3 from "../pages/tools/T3";
 import T4 from "../pages/tools/T4";
 
-import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck, Calculate, Functions } from "@mui/icons-material";
+import { Home, StickyNote2, QrCode2, Celebration, CurrencyExchange, Spellcheck, Calculate, Functions, MonitorHeart } from "@mui/icons-material";
 import ExchangeRate from "../pages/tools/ExchangeRate";
-import { patch } from "@mui/material";
 import LeetCodePanel from "../pages/features/LeetCodePanel";
+import LifeEntropy from "@/src/pages/features/LifeEntropy/index.jsx";
 
 // features 不支持目录分类
 // tools 只支持二级目录
@@ -37,6 +37,13 @@ const routeConfigurations = [
                 path: 'features',
                 element: <FeatureReoutPage />,
                 children: [
+                    {
+                        path: 'lifeEntropy',
+                        icon: <MonitorHeart />,
+                        title: 'LifeEntropy',
+                        desc: 'xxxxxxxxxx',
+                        element: <LifeEntropy />
+                    },
                     {
                         path: 'cheatsheets',
                         icon: <StickyNote2 />,

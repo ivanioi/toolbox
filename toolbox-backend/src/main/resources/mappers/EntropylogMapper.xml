@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.toolboxbackend.modules.entropy.mapper.EntropylogMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.toolboxbackend.modules.entropy.entity.Entropylog">
+            <result property="id" column="id" />
+            <result property="type" column="type" />
+            <result property="updateCount" column="update_count" />
+            <result property="createDate" column="create_date" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,type,update_count,create_date
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from entropylog
+        where 
+    </select>
+    <select id="selectByDateRange" resultType="java.lang.Integer">
+        select sum_of_count from (
+            select sum(update_count) as sum_of_count, type from entropylog
+            <where>
+                <if test="startDate != null">
+                    create_date &gt;= #{startDate}
+                </if>
+                <if test="endDate != null">
+                    and create_date &lt;= #{endDate}
+                </if>
+            </where>
+            group by type
+            order by type asc
+        ) as tmp_table
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from entropylog
+        where 
+    </delete>
+    <insert id="insert">
+        insert into entropylog
+        ( id,type,update_count,create_date)
+        values (#{id},#{type},#{updateCount},#{createDate})
+    </insert>
+    <insert id="insertSelective">
+        insert into entropylog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="type != null">type,</if>
+                <if test="updateCount != null">update_count,</if>
+                <if test="createDate != null">create_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="type != null">#{type},</if>
+                <if test="updateCount != null">#{updateCount},</if>
+                <if test="createDate != null">#{createDate},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="org.example.toolboxbackend.modules.entropy.entity.Entropylog">
+        update entropylog
+        <set>
+                <if test="id != null">
+                    id = #{id},
+                </if>
+                <if test="type != null">
+                    type = #{type},
+                </if>
+                <if test="updateCount != null">
+                    update_count = #{updateCount},
+                </if>
+                <if test="createDate != null">
+                    create_date = #{createDate},
+                </if>
+        </set>
+        where  
+    </update>
+    <update id="updateByPrimaryKey" parameterType="org.example.toolboxbackend.modules.entropy.entity.Entropylog">
+        update entropylog
+        set 
+            id =  #{id},
+            type =  #{type},
+            update_count =  #{updateCount},
+            create_date =  #{createDate}
+        where  
+    </update>
+</mapper>
